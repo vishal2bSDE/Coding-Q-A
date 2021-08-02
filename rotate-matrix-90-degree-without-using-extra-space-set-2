@@ -2,12 +2,16 @@ Problem Link : (https://www.geeksforgeeks.org/rotate-matrix-90-degree-without-us
 ---------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------------------------------
 
-public static void flip(int[][] mat, int r, int c){
+public static int[][] rotate90DegAC(int[][] mat, int r, int c){
         int n=r/2;
         for(int i=0;i<=n;i++){
+             // top left
             int i1=i, j1=i;
+            // bottom left
             int i2=r, j2=i;
+            // bottom right
             int i3=c, j3=c;
+            // top right
             int i4=i, j4=c;
             for(int j=i;j<c;j++) {
                 // System.out.println(i1+" "+j1);
@@ -30,7 +34,9 @@ public static void flip(int[][] mat, int r, int c){
                 --i3;
                 --j4;
             }
-            // System.out.println("00000000000000");
+            
+            // decreasing the box shape
             --c;--r;
         }
-    }`
+        return mat
+    }
