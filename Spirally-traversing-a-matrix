@@ -1,0 +1,60 @@
+problem link - https://www.geeksforgeeks.org/print-a-given-matrix-in-spiral-form/
+----------------------------------------------------------------------------------
+----------------------------------------------------------------------------------
+
+static ArrayList<Integer> spirallyTraverse(int mat[][], int r, int c)
+    {
+        int i=0, j=0;
+        ArrayList<Integer> list=new ArrayList();
+        
+         if(r==1){
+            for(int i1=0;i1<c;i1++)
+                list.add(mat[0][i1]);
+                return list;
+        } else if (c==1){
+            for(int i1=0;i1<r;i1++)
+                list.add(mat[i1][0]);
+                return list;
+        }
+        
+        --r;--c;
+        
+       // by using -1 on already visited array element will decrease the complexity
+        while(i<=r && j<=c && mat[i][j]!=-1){
+            int i1=i, j1=j;
+            for(int j2=j1;j2<=c && i1<=r && mat[i1][j2]!=-1; j2++){
+                list.add(mat[i1][j2]);
+                mat[i1][j2]=-1;
+            }
+            
+            //increase becoz it is currently on 1 value
+            ++i1;
+            for(int i2=i1;i2<=r &&  mat[i2][c]!=-1;i2++){
+                list.add(mat[i2][c]);
+                mat[i2][c]=-1;
+                i1=i2;
+            }
+            
+            //decreasing becoz it is currently on 1 value
+            j1=c-1;
+            for(int j2=j1;j2>=0 && i1>=0 && mat[i1][j2]!=-1;j2--){
+                list.add(mat[i1][j2]);
+                mat[i1][j2]=-1;
+                j1=j2;
+            }
+            
+            //decreasing becoz it is currently on 1 value
+            --i1;
+            for(int i2=i1;i2>=0 && j1>=0 && mat[i2][j1]!=-1;i2--){
+                list.add(mat[i2][j1]);
+                mat[i2][j1]=-1;
+            }
+            
+            //smalling the box size
+            i++;
+            j=i;
+            --c;
+            --r;
+        }
+        return list;
+    }
