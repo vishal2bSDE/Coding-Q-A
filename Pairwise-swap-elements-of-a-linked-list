@@ -11,7 +11,10 @@ public Node pairwiseSwap(Node head)
         if(head.next==null)
             return head;
         
-        Node t1=head, t2=head, prev=null;head=head.next; 
+        Node t1=head, t2=head, prev=null;
+        
+        // as head is swapped
+        head=head.next; 
         while(t1!=null && t1.next!=null){
             Node t3=t1.next.next;
             if(prev!=null)
