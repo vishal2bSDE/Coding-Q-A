@@ -1,0 +1,27 @@
+Problem link - https://www.geeksforgeeks.org/pairwise-swap-elements-of-a-given-linked-list/
+---------------------------------------------------------------------------------------------------
+This code swaps the cell of the list. This algo will save a lot of time when there is big chunk of data saved in each cell as it is not swapping the data,
+just changing the next node ref address.
+
+Complexity - time O(N), space O(1).
+---------------------------------------------------------------------------------------------------
+
+public Node pairwiseSwap(Node head)
+    {
+        if(head.next==null)
+            return head;
+        
+        Node t1=head, t2=head, prev=null;head=head.next; 
+        while(t1!=null && t1.next!=null){
+            Node t3=t1.next.next;
+            if(prev!=null)
+                prev.next=t1.next;
+            t2=t2.next;
+            t2.next=t1;
+            t1.next=t3;
+            prev=t1;
+            t1=t3;
+            t2=t3;
+        }
+        return head;
+    }
