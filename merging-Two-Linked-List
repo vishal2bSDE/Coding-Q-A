@@ -1,0 +1,43 @@
+Dont have the link because i wrote this code by mistake :), it was supposed to be for common seq ele b/w two linkedList.
+But it was worth it.
+-------------------------------------------------------------------------------
+Complexity : Time - O( len(list1)+len(list2)), Memory - O(1)
+-------------------------------------------------------------------------------
+
+class Node {
+   int data;
+    Node next;
+    Node(int d)  { data = d;  next = null; }
+}
+
+public static Node mergingTwoLinkedList(Node head1, Node head2)
+    {
+        if(head1==null)
+            return head2;
+        if(head2==null)
+            return head1;
+            
+        Node head=null, temp=null;
+        if(head1.data<head2.data){
+            head=head1;
+            head1=head1.next;
+        } else {
+            head=head2;
+            head2=head2.next;
+        }
+        temp=head;
+        while(head1!=null || head2!=null){
+            if(head2==null || (head1!=null && head1.data<head2.data)){
+                temp.next=head1;
+                head1=head1.next;
+            }
+            else {
+                temp.next=head2;
+                head2=head2.next;
+                // temp.next=null;
+            }
+            temp=temp.next;
+            temp.next=null;
+        }
+        return head;
+    }
