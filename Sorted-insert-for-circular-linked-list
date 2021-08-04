@@ -1,0 +1,32 @@
+Problem Link : https://www.geeksforgeeks.org/sorted-insert-for-circular-linked-list/
+----------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1)
+----------------------------------------------------------------------------------------
+
+public static Node sortedInsert(Node head,int data) {
+	    if(head==null)
+	        return new Node(data);
+	        
+        Node temp1=head, prev=null, node=new Node(data);
+        
+        while(data>temp1.data){
+            prev=temp1;
+            temp1=temp1.next;
+            if(temp1==head)
+                break;
+        }
+        
+        // if new node.dat <= head.data. Hence getting the last element to make it circular
+        if(prev==null){
+            prev=head;
+            while(prev.next!=head)
+                prev=prev.next;
+        }
+        
+        prev.next=node;
+        node.next=temp1;
+        
+        if(data<=head.data)
+            return node;
+        return head;
+}
