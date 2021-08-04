@@ -36,3 +36,4 @@ public static void getJosephusPosition(Node head, int m){
     }
     return head.data;
   }
+}
