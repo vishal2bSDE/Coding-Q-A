@@ -7,9 +7,20 @@ until only the last person remains, who is given freedom. Given the total number
 indicates that k-1 persons are skipped and k-th person is killed in circle. The task is to choose the place in 
 the initial circle so that you are the last one remaining and so survive. ( 0 based indexing) 
 
-Complexity : Time - O(m*len(linked list)), Memory - O(1)
+Complexity : Time - O(m*len(S linked list)), Memory - O(1)
 ----------------------------------------------------------------------------------------------
 
+class Node
+	{
+		public int data ;
+		public Node next;
+		public Node( int data )
+		{
+			this.data = data;
+		}
+	}
+  
+  
 public static void getJosephusPosition(Node head, int m){
   int i=0;
   Node prev=null;
