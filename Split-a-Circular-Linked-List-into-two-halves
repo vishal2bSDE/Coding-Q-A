@@ -1,0 +1,38 @@
+Problem Link : https://www.geeksforgeeks.org/split-a-circular-linked-list-into-two-halves/
+------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------
+
+class Node {
+   int data;
+    Node next;
+    Node(int d)  { data = d;  next = null; }
+}
+
+public static Node[] splitList(Node head) {
+             Node temp1=head, temp2=head.next, headFirst=null, headSec=null;
+             
+             // to get the middle node if even or the (!+middle) node if odd.
+             while(temp2.next!=head){
+                 temp1=temp1.next;
+                 temp2=temp2.next;
+                 if(temp2.next!=head)
+                    temp2=temp2.next;
+             }
+             
+             headFirst=head;
+             headSec=temp1.next;
+             
+             temp1=head;
+             while(temp1.next!=headSec){
+                 temp1=temp1.next;
+             }
+             temp1.next=headFirst;
+             
+             temp1=headSec;
+             while(temp1.next!=head){
+                 temp1=temp1.next;
+             }
+             temp1.next=headSec;
+             
+             return new Node[]{headFirst, headSec};             
+}
