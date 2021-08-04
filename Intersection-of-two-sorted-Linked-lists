@@ -1,0 +1,34 @@
+Problem link : https://www.geeksforgeeks.org/intersection-of-two-sorted-linked-lists/
+---------------------------------------------------------------------------------------
+This code connect the common ele in in-place. And is easy to understand code.
+
+Complexity : Time - O(len(head1) + len(head2)), Memory - O(1)
+---------------------------------------------------------------------------------------
+
+public static Node findIntersection(Node head1, Node head2) {
+        Node head=null, temp=null;
+        
+        while(head1!=null && head2!=null){
+            if(head1.data<head2.data)
+                head1=head1.next;
+            else if(head1.data>head2.data)
+                head2=head2.next;
+            else{
+            //Assigning the head
+                if(head==null){
+                    head=head1;
+                    temp=head;
+                } else {
+                // connecting in in-place
+                    temp.next=head1;;
+                    temp=temp.next;
+                }
+                head1=head1.next;
+                head2=head2.next;
+            }
+        }
+        //setting the last connected node.next null to end the list
+        temp.next=null;
+        
+        return head;
+    }
