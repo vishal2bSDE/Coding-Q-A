@@ -1,0 +1,48 @@
+Problem Link : https://www.geeksforgeeks.org/segregate-even-and-odd-elements-in-a-linked-list/
+--------------------------------------------------------------------------
+Complexity : Time - O(len(head)), Memory - O(1)
+--------------------------------------------------------------------------
+
+class Node{
+    int data;
+    Node next;
+    
+    Node(int x){
+        data = x;
+        next = null;
+    }
+}
+
+Node divide(int N, Node head){
+        // head1 === evenNos and head2 === oddNos
+        Node head1=null, head2=null, temp1=null, temp2=null, temp=head;
+        
+        while(temp!=null){
+            if(temp.data%2==0){
+                if(head1==null){
+                    head1=temp;
+                    temp1=temp;
+                } else {
+                    temp1.next=temp;
+                    temp1=temp1.next;
+                }
+            } else {
+                if(head2==null){
+                    head2=temp;
+                    temp2=temp;
+                } else {
+                    temp2.next=temp;
+                    temp2=temp2.next;
+                }
+            }
+            temp=temp.next;
+        }
+        // If no even no is present
+        if(temp1!=null)
+        temp1.next=head2;
+        // If no odd no is present
+        if(temp2!=null)
+            temp2.next=null;
+            
+        return head1==null ? head2 : head1;
+    }
