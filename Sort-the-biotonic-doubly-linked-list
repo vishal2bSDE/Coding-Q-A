@@ -1,0 +1,51 @@
+Problem Link : https://www.geeksforgeeks.org/sort-biotonic-doubly-linked-list/
+--------------------------------------------------------------------------------
+Complexity : Time - O(len(head)), Memory - O(1)
+--------------------------------------------------------------------------------
+
+static class Node
+{
+	int data;
+	Node next;
+	Node prev;
+}
+
+public static Node sort(Node head){
+        if(head.next==null)
+            return head;
+            
+        Node temp1=head, temp2=null, temp=null;
+        
+        //  traversing to the end
+        while(temp1.next!=null)
+            temp1=temp1.next;
+            
+        temp2=temp1;
+        temp1=head;
+        if(temp1.data<temp2.data){
+            head=temp1;
+            temp=head;
+            temp1=temp1.next;
+        } else {
+            head=temp2;
+            temp=head;
+            temp2=temp2.prev;
+        }
+        head.prev=null;
+        while(temp1!=temp2){
+            if(temp1.data<temp2.data){
+                temp.next=temp1;
+                temp1=temp1.next;
+            } else {
+                temp.next=temp2;
+                temp2=temp2.prev;
+            }
+            temp.next.prev=temp;
+        }
+        // setting the new next.prev to curr temp
+        temp.next=temp1;
+        temp.next.prev=temp;
+        temp.next.next=null;
+        
+        return head;
+    }
