@@ -1,0 +1,51 @@
+Problem Link : https://www.geeksforgeeks.org/swap-kth-node-from-beginning-with-kth-node-from-end-in-a-linked-list/
+---------------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(len(head)), Memory - O(1)
+---------------------------------------------------------------------------------------------------------------------
+
+class Node  {
+     int data;
+     Node next;
+     Node(int data)
+     {
+         this.data = data;
+         next = null;
+     }
+  }
+  
+Node swapkthnode(Node head, int len, int K)
+    {
+        if(K>len)
+            return head;
+            
+        Node temp1=head, temp2=head, prev1=null, prev2=null, temp=null;
+        int len=1;
+        
+        while(len!=K){
+            ++len;
+            prev1=temp1;
+            temp1=temp1.next;
+        }
+        len=1;
+        while(len!=(len-K+1)){
+            ++len;
+            prev2=temp2;
+            temp2=temp2.next;
+        }
+        
+        if(prev1!=null)
+            prev1.next=temp2;
+        if(prev2!=null)
+            prev2.next=temp1;
+        temp=temp1.next;
+        temp1.next=temp2.next;
+        temp2.next=temp;
+        
+        //if K == 1
+        if(head==temp1)
+            return temp2;
+         // if len-k==1
+        if(head==temp2)
+            return temp1;
+        return head;
+    }
