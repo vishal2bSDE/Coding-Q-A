@@ -1,0 +1,62 @@
+Problem Link : https://www.geeksforgeeks.org/reverse-a-list-in-groups-of-given-size/
+-----------------------------------------------------------------------------------------
+Complexity : Time - O(len(head)), Memory - O(1)
+-----------------------------------------------------------------------------------------
+
+class Node
+{
+    int data;
+    Node next;
+    Node(int key)
+    {
+        data = key;
+        next = null;
+    }
+}
+
+public static Node reverse(Node head, int k)
+  {
+      // ! === no change in list
+      if(k==1)
+          return head;
+          
+      Node currBlockHead=head, newHead=null, newBlockHead=null, 
+          temp=head, prevBlockTail=null;
+
+      for(int i=1;temp!=null;i++){
+          if(i%k==0 || temp.next==null) {
+              Node t1=temp.next;
+              newBlockHead=reverseList(currBlockHead, temp);
+
+              if(newHead==null)
+                  newHead=newBlockHead;
+
+              // Connecting the two reversed block
+              if(prevBlockTail!=null)
+                  prevBlockTail.next=newBlockHead;
+              prevBlockTail=currBlockHead;
+
+              currBlockHead=t1;
+              temp=t1;  
+          } else
+              temp=temp.next;
+      }
+
+      return newHead;
+  }
+  private static Node reverseList(Node head, Node tail)
+  {
+      Node temp=head, prev=null;
+
+      while(temp!=tail){
+          Node t=temp.next;
+          temp.next=prev;
+          prev=temp;
+          temp=t;
+      }
+      // As loop get terminated so completing the link here
+      tail.next=prev;
+      temp=tail;
+
+      return tail;
+  }
