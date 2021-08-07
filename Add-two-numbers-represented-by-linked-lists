@@ -1,0 +1,73 @@
+Problem Link : https://www.geeksforgeeks.org/add-two-numbers-represented-by-linked-lists/
+----------------------------------------------------------------------------------------------
+Complexity : Time(O{Max(len(first), len(Second))), Memory - No extra space except for the answer
+----------------------------------------------------------------------------------------------
+
+class Node {
+    int data;
+    Node next;
+
+    Node(int d) {
+        data = d;
+        next = null;
+    }
+}
+
+static Node addTwoLists(Node first, Node second) 
+{
+        // reversing the both list as they are in higher place to lower place order
+        first = reverseList(first);
+        second = reverseList(second);
+        
+        int c=0;
+        Node head=null, temp=null;
+        while(first!=null && second!=null){
+            int sum=first.data+second.data+c;
+            Node t=new Node((sum)%10);
+            c=(sum)/10;
+            if(head==null){
+                head=t;
+                temp=t;
+            } else {
+                temp.next=new Node((sum)%10);
+                temp=temp.next;
+            }
+            first=first.next;
+            second=second.next;
+        }
+        
+        
+        if(first==null){ // if second list is smaller
+            while(second!=null){
+                temp.next=new Node((second.data+c)%10);
+                c=(second.data+c)/10;
+                temp=temp.next;
+                second=second.next;
+            }
+        } else if(second==null) { // if first list is smaller
+            while(first!=null){
+                temp.next=new Node((first.data+c)%10);
+                c=(first.data+c)/10;
+                temp=temp.next;
+                first=first.next;
+            }
+        }
+        if(c>0)
+            temp.next=new Node(c);
+            
+         // reversing the answer as they are currently in lower place to higher 
+        return reverseList(head);
+    }
+    static Node reverseList(Node head)
+    {
+        Node temp=head, prev=null;
+        
+        while(temp!=null){
+            Node t=temp.next;
+            temp.next=prev;
+            prev=temp;
+            temp=t;
+        }
+        
+        return prev;
+    }
