@@ -1,0 +1,27 @@
+Problem Link : https://www.geeksforgeeks.org/the-stock-span-problem/
+--------------------------------------------------------------------------
+Complexity : Time - O(len(price)), Memory - O(len(price))
+--------------------------------------------------------------------------
+
+//Function to calculate the span of stockâ€™s price for all n days.
+    public static int[] calculateSpan(int price[], int n)
+    {
+        int[] ans=new int[n];
+        Stack<Integer> st=new Stack();
+        int i=0;
+        
+        while(i<n){
+            if(st.isEmpty()){// Biggest till yet
+                st.push(i);
+                ans[i]=++i;
+            } else if(price[st.peek()]<=price[i])
+                st.pop();
+            else{
+                ans[i]=i-st.peek();
+                st.push(i);
+                i++;
+            }
+        }
+        
+        return ans;
+    }
