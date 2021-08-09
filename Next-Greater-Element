@@ -1,0 +1,29 @@
+Problem Link : https://www.geeksforgeeks.org/next-greater-element/
+-----------------------------------------------------------------------
+Complexity : Time - O(len(arr)), Memory - O(len(arr))
+-----------------------------------------------------------------------
+
+  //Function to find the next greater element for each element of the array.
+    public static long[] nextLargerElement(long[] arr, int n)
+    { 
+        Stack<Integer> st=new Stack();
+        long[] ans=new long[n];
+        // As the next element will lie on the right side hence starting from right
+        int i=n-1;
+        
+        while(i>=0){
+            if(st.isEmpty()){// Biggest till yet
+                ans[i]=-1L;
+                st.push(i);
+                --i;
+            } else if(arr[st.peek()]<=arr[i])
+                st.pop();
+            else {
+                ans[i]=arr[st.peek()];
+                st.push(i);
+                i--;
+            }
+        }
+        
+        return ans;
+    } 
