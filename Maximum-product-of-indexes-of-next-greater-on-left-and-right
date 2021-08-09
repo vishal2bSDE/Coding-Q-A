@@ -1,0 +1,42 @@
+Problem Link : https://www.geeksforgeeks.org/maximum-product-of-indexes-of-next-greater-on-left-and-right/
+-----------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(len(arr)), Memory - O(len(arr))
+-----------------------------------------------------------------------------------------------------------------
+
+public static int getMaxProduct(int[] arr, int n){
+        int[] left = nextGreater(arr, n, +1);// Getting the array with next greater element's index on left by using +1
+        int[] right = nextGreater(arr, n, -1);// Getting the array with next greater element's index on right by using -1
+        int ans=0;
+        
+        // System.out.println(Arrays.toString(left));
+        // System.out.println(Arrays.toString(right));
+        for(int i=0;i<n;i++)
+            ans=Math.max(ans, left[i]*right[i]);// Just doing normal product and getting the max
+            
+        return ans;
+        
+    }
+    
+    public static int[] nextGreater(int[] arr, int n, int inc){
+        int i=0;
+        if(inc==-1)
+            i=n-1;
+        int[] ans=new int[n];
+        Stack<Integer> st=new Stack();
+        
+        while(i>=0 && i<n){
+            if(st.isEmpty()){
+                st.push(i);
+                ans[i]=0;
+                i+=inc;// Adding becoz inc can be +-1 as it is using for finding ans in both right & left side
+            } else if(arr[st.peek()]<=arr[i])
+                st.pop();
+            else{
+                ans[i]=1+st.peek();
+                st.push(i);
+                i+=inc;
+            }
+        }
+        
+        return ans;
+    }
