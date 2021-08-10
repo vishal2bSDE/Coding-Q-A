@@ -1,0 +1,25 @@
+Problem Link : https://www.geeksforgeeks.org/reversing-first-k-elements-queue/
+---------------------------------------------------------------------------------
+Complexity : Time - O(len(q)), Memory - O(len(q))
+---------------------------------------------------------------------------------
+
+//Function to reverse first k elements of a queue.
+    public Queue<Integer> modifyQueue(Queue<Integer> q, int k)
+    {
+        // Remaining size which didn'i get flipped
+        int size=q.size()-k;
+        Stack<Integer> st=new Stack();
+        while(k>0){
+          --k;
+          st.push(q.poll());
+        }
+        while(!st.isEmpty())
+            q.add(st.pop());
+        // As the last size element are in the front move them to the back
+        while(size>0){
+            q.add(q.poll());
+            --size;
+        }
+        
+        return q;
+    }
