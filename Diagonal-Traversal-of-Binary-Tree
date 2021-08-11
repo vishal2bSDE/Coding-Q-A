@@ -1,0 +1,49 @@
+Problem Link : https://www.geeksforgeeks.org/diagonal-traversal-of-binary-tree/
+-------------------------------------------------------------------------------------
+Complexity : Time - O(len(root)), Memory - O(len(root))
+-------------------------------------------------------------------------------------
+
+
+class Node
+{
+    int data; //node data
+    Node left, right; //left and right child's reference
+
+    // Tree node constructor
+    public Node(int data)
+    {
+        this.data = data;
+         left = right = null;
+    }
+}
+
+class Tree
+{
+    HashMap<Integer, List<Integer>> map;
+     public ArrayList<Integer> diagonal(Node root)
+      {
+           map=new HashMap();
+           ArrayList<Integer> ans=new ArrayList();
+           traverse(root, 0);
+           int i=0;
+           while(map.containsKey(i)){
+               List<Integer> temp=map.get(i);
+               for(int e: temp)
+                    ans.add(e);
+                ++i;
+           }
+           
+           return ans;
+      }
+      public void traverse(Node root, int i){
+          if(root==null)
+            return ;
+            
+            if(!map.containsKey(i))map.put(i, new ArrayList());
+            map.get(i).add(root.data);
+            //i is increaseing becoz it belongs to next diagonal line
+            traverse(root.left, i+1);
+            traverse(root.right, i);
+            
+      }
+}
