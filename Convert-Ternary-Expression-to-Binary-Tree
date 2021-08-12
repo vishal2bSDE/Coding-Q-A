@@ -1,0 +1,39 @@
+Problem Link : https://www.geeksforgeeks.org/convert-ternary-expression-binary-tree/
+----------------------------------------------------------------------------------------
+Complexity : Time - O(len(str)), Memory - O(len(str))
+----------------------------------------------------------------------------------------
+
+public static Node convertExp(String str, int i)
+    {
+        // Just to easy the code optional
+        char[] ch=str.toCharArray();
+        int n=str.length();
+        i=0;
+        //For storing levels
+        Stack<Node> st=new Stack();
+        Node head=new Node(ch[i]);
+        st.push(head);
+        i=1;
+        // It is somewhat like forming a small small complete BT. No node will have 1 always 2 or 0.
+        while(i<n){
+           if(ch[i]=='?') {
+              Node t=new Node(ch[i+1]);
+              if(st.peek().left==null){
+                  st.peek().left=t;
+              } else{
+                  st.peek().right=t;
+              }
+              st.push(t);
+              i+=2;
+           } else {// : - will always pop the element from the stack
+               st.pop();
+               Node t=new Node(ch[i+1]);
+               st.peek().right=t;
+               st.pop();
+              st.push(t);
+               i+=2;
+           }
+        }
+        
+        return head;
+    }
