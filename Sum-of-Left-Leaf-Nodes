@@ -1,0 +1,29 @@
+Problem Link : https://www.geeksforgeeks.org/find-sum-left-leaves-given-binary-tree/
+-------------------------------------------------------------------------------------
+Complexity : Time - O(len(root)), Memory - O(len(root))
+-------------------------------------------------------------------------------------
+
+
+
+{
+    int ans=0;
+    public int leftLeavesSum(Node root) 
+    { 
+        ans=0;
+        traverse(root);
+        return ans;
+    } 
+    
+    public int traverse(Node root){
+        if(root==null)
+            return 0;
+            
+        int left=traverse(root.left);
+        int right=traverse(root.right);
+        if(root.left==null && root.right==null)
+            return root.data;
+        ans+=left;
+        return 0;
+    }
+
+}
