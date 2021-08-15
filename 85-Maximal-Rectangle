@@ -1,0 +1,49 @@
+Problem Link : https://leetcode.com/problems/maximal-rectangle/
+--------------------------------------------------------------------------------
+Complexity : Time - O(row*col), Memory - O(len(matrix_col))
+--------------------------------------------------------------------------------
+
+public int maximalRectangle(char[][] mat) {
+        if(mat.length==0)
+            return 0;
+        int ans=0, r=mat.length, c=mat[0].length;
+        int[] dp=new int[c];
+        
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(mat[i][j]=='0'){
+                    dp[j]=0;}
+                else
+                    dp[j]+=1;
+            }
+            
+            // Greater element index which are lesser than the current index element on left/ right
+            int[] left=jstLesser(dp, 1), right=nxtLesser(dp, -1);
+            for(int j=0;j<c;j++){
+                ans=Math.max(ans, dp[j]*(right[j]-left[j]-1));
+            }
+        }
+        return ans;
+    }
+    private int[] jstLesser(int[] arr, int add){
+        int i=0, n=arr.length;
+        if(add==-1)
+            i=n-1;
+        Stack<Integer> st=new Stack();
+        int[] res=new int[n];
+        
+        while(i>=0 && i<n){
+            if(st.isEmpty()){
+                res[i]=add==-1 ? n : -1;
+                st.push(i);
+                i+=add;
+            } else if(arr[st.peek()]<arr[i]){
+                res[i]=st.peek();
+                st.push(i);
+                i+=add;
+            } else
+                st.pop();
+        }
+        
+        return res;
+    }
