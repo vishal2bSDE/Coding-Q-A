@@ -1,0 +1,26 @@
+Problem Link : https://www.geeksforgeeks.org/find-k-th-smallest-element-in-bst-order-statistics-in-bst/
+--------------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1)
+--------------------------------------------------------------------------------------------------------
+
+{
+    int ans, k;
+    public int KthSmallestElement(Node root, int K) 
+    {
+        ans=-1;
+        k=K;
+        traverse(root);
+        return ans;
+    }
+    
+    private void traverse(Node root){
+        if(root==null)
+            return;
+        traverse(root.left);
+        --k;
+        //becoz k==0 only once
+        if(k==0)
+            ans=root.data;
+        traverse(root.right);
+    }  
+}
