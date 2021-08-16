@@ -1,0 +1,43 @@
+Problem Link : https://www.geeksforgeeks.org/count-pairs-from-two-bsts-whose-sum-is-equal-to-a-given-value-x/
+------------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(N1+N2) Memory - O(H1+H2)
+------------------------------------------------------------------------------------------------------------------
+
+	public static int countPairs(Node root1, Node root2, int x)
+	{
+		Stack<Node> st1=new Stack(), st2=new Stack();
+		int cnt=0;
+		
+		st1.push(root1);st2.push(root2);
+		while(!st1.isEmpty() && !st2.isEmpty()){//terminate when any stack is empty
+    
+		    if(st1.peek().left!=null){//Making st1.top() always to point nxt minimum node
+		        Node t1=st1.peek().left;
+		        st1.peek().left=null;
+		        st1.push(t1);
+		        continue;
+		    } else if(st2.peek().right!=null){//Making st2.top() always to point nxt maxmum node
+		        Node t1=st2.peek().right;
+		        st2.peek().right=null;
+		        st2.push(t1);
+		        continue;
+		    } 
+		    int sum=st1.peek().data+st2.peek().data;
+		    if(sum==x){
+		        ++cnt;
+		        Node t1=st1.pop();
+		        if(t1.right!=null)
+		            st1.push(t1.right);
+		    } else if(sum>x){//moving the st1.top() to point to next minimum node
+		            Node t1=st2.pop();
+		            if(t1.left!=null)
+		                st2.push(t1.left);
+		    } else {//moving the st2.top() to point to next maximum node
+		            Node t1=st1.pop();
+		            if(t1.right!=null)
+		                st1.push(t1.right);
+		    }
+		}
+		
+		return cnt;
+	}
