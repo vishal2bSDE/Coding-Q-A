@@ -1,0 +1,24 @@
+Problem Link : https://www.geeksforgeeks.org/maximum-element-two-nodes-bst/
+--------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1)
+--------------------------------------------------------------------------------
+
+{
+  int ans=Integer.MIN_VALUE;
+  boolean findMaxInPath(Node root, int A, int B){
+    if(root==null)
+      return false;
+    
+    boolean b1=findMaxInPath(root.left, A, B);
+    boolean b2=findMaxInPath(root.right, A, B);
+    
+    if(b1 && b2){
+      ans=Math.max(root.data, ans);
+      return false;
+    } else if(b1 || b2 || root.data == A || root.data == B){
+      ans=Math.max(root.data, ans);
+      return true;
+    }
+    return false;
+  }
+}
