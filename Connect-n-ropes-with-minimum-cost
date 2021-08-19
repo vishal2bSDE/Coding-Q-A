@@ -1,0 +1,19 @@
+Problem Link : https://www.geeksforgeeks.org/connect-n-ropes-minimum-cost/
+------------------------------------------------------------------------------
+Complexity : Time - O(NlogN), Memory - O(N)
+------------------------------------------------------------------------------
+
+long minCost(long arr[], int n) {
+    PriorityQueue<Long> pq=new PriorityQueue();
+    for(long ele : arr)
+        pq.add(ele);
+
+    long ans=0;
+    while(pq.size()>1){
+        long sum=pq.poll()+pq.poll();
+        ans+=sum;
+        pq.add(sum);
+    }
+
+    return ans;
+}
