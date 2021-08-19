@@ -1,0 +1,21 @@
+Problem Link : https://www.geeksforgeeks.org/check-if-a-given-binary-tree-is-heap/
+------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1)
+------------------------------------------------------------------------------------
+
+boolean isHeap(Node root) {
+		if(root==null)
+		    return true;
+	    if(root.left==null && root.right==null)
+	        return true;
+        if(root.left==null && root.right!=null)
+            return false;
+            
+        return (root.data>get(root.left) && root.data>get(root.right))
+            && isHeap(root.left) && isHeap(root.right);
+}
+private int get(Node curr) {
+    if(curr==null)
+        return 0;
+      return curr.data;
+}
