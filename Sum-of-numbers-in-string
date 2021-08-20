@@ -1,0 +1,38 @@
+Probleam Link : https://www.geeksforgeeks.org/calculate-sum-of-all-numbers-present-in-a-string/
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+------------------------------------------------------------------------------------------------
+
+public static long findSum(String str) {
+      long ans=0;
+      String[]  s=str.split("([a-z]+)|([A-Z]+)");
+      for(String s1 : s){
+          if(s1.length()>0)
+              ans=findSum(Long.toString(ans), s1);
+      }
+
+      return ans;
+  }
+  private static long findSum(String X, String Y) {
+      StringBuilder str=new StringBuilder("");
+      char[] s1=X.toCharArray(), s2=Y.toCharArray();
+      int cr=0, i=X.length()-1, j=Y.length()-1;
+
+      while(i>=0 || j>=0){
+          int s=0;
+          if(i>=0)
+              s+=(s1[i--]-'0');
+          if(j>=0)
+              s+=(s2[j--]-'0');
+          s=s+cr;
+
+          str.insert(0, s%10+"");
+          cr=s/10;
+      }
+      if(cr!=0)
+          str.insert(0, '1');
+      while(str.length()>1 && str.charAt(0)=='0') // to remove all the leading 0's
+          str.deleteCharAt(0);
+
+      return Long.parseLong(str.toString());
+  }
