@@ -1,0 +1,28 @@
+Problem Link : https://www.geeksforgeeks.org/sum-two-large-numbers/
+----------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+----------------------------------------------------------------------
+
+String findSum(String X, String Y) {
+        StringBuilder str=new StringBuilder("");
+        char[] s1=X.toCharArray(), s2=Y.toCharArray();
+        int cr=0, i=X.length()-1, j=Y.length()-1;
+        
+        while(i>=0 || j>=0){
+            int s=0;
+            if(i>=0)
+                s+=(s1[i--]-'0');
+            if(j>=0)
+                s+=(s2[j--]-'0');
+            s=s+cr;
+            
+            str.insert(0, s%10+"");
+            cr=s/10;
+        }
+        if(cr!=0)
+            str.insert(0, '1');
+        while(str.length()>1 && str.charAt(0)=='0') // to remove all the leading 0's
+            str.deleteCharAt(0);
+        
+        return str.toString();
+    }
