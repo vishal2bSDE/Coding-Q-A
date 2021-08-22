@@ -1,0 +1,28 @@
+Problem Link : https://www.geeksforgeeks.org/queue-based-approach-for-first-non-repeating-character-in-a-stream/
+-----------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(26/1)
+-----------------------------------------------------------------------------------------------------------------
+
+public String FirstNonRepeating(String A)
+{
+    Queue<Character> q=new LinkedList();
+    Map<Character, Integer> map=new HashMap();
+    StringBuilder str=new StringBuilder("");
+    int i=0;
+
+    while(i<A.length()){
+        char ch=A.charAt(i++);
+        map.put(ch, map.getOrDefault(ch, 0)+1);
+        if(map.get(ch)==1)
+            q.add(ch);
+        while(!q.isEmpty() && map.get(q.peek())>1)
+            q.poll();
+        if(q.isEmpty())
+            str.append('#');
+        else
+            str.append(q.peek());
+
+    }
+    return str.toString();
+
+}
