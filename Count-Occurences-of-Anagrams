@@ -1,0 +1,34 @@
+Problem Link : https://www.geeksforgeeks.org/anagram-substring-search-search-permutations/
+==========================================================================================
+Complexity : Time - O(N), Memory - O(26)
+==========================================================================================
+
+int search(String pat, String txt) {
+        int cnt=0, i=0, j=0;
+        int[] freqp=new int[26], freqt=new int[26];
+        boolean f=false;
+        
+        for(char ch : pat.toCharArray())
+            ++freqp[ch-'a'];
+        while(i<txt.length()){
+            char ch=txt.charAt(i);
+            
+            if(freqp[ch-'a']==0){//if the curr char not exist in pat then reset the txt_freq[]
+                j=++i;
+                freqt=new int[26];
+                f=false;
+            } else if(freqp[ch-'a']==freqt[ch-'a']){//if the curr char == pat_freq then decrese the window
+                --freqt[txt.charAt(j)-'a'];
+                ++j;
+            }else{////if the txt_freq[curr_char]<pat_freq[curr_char] then increase txt_freq[curr_char] as it is a potential candidate
+                ++freqt[ch-'a'];
+                ++i;
+            }
+            
+            if(i-j==pat.length()){
+                ++cnt;
+            }
+        }   
+        
+        return cnt;
+    }
