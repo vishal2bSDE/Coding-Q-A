@@ -1,0 +1,37 @@
+Problem Link : https://www.geeksforgeeks.org/edit-distance-dp-5/
+---------------------------------------------------------------------
+Complexity : Time - O(len(s) * len(t)), Memory - O(len(t))
+---------------------------------------------------------------------
+
+public int editDistance(String s, String t) {
+        int n1=s.length(), n2=t.length();
+        int[] dp=new int[n2+1];
+        
+        for(int i=0;i<=n1;i++){
+            int[] dp1=new int[n2+1];
+            for(int j=0;j<=n2;j++){
+                if (i == 0){ //when s is empty. So insert j chars
+                    dp1[j] = j; 
+                    continue;
+                }
+                else if (j == 0){ // when t is empty. So remove i chars
+                    dp1[j] = i;
+                    continue;
+                }
+                    
+                char c1=s.charAt(i-1), c2=t.charAt(j-1);
+                
+                if(c1==c2)
+                    dp1[j]=dp[j-1];
+                else{
+                    dp1[j]=1+Math.min(dp1[j-1], //insert
+                             Math.min(dp[j-1], //replace
+                            dp[j] //remove
+                            ));
+                }
+            }
+            dp=dp1; //updating the dp[]
+        }
+        
+        return dp[n2];
+    }
