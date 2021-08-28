@@ -1,0 +1,26 @@
+Problem Link : https://www.geeksforgeeks.org/dynamic-programming-set-10-0-1-knapsack-problem/
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(N*W), Memory - O(N*W)
+------------------------------------------------------------------------------------------------
+
+//Function to return max value that can be put in knapsack of capacity W.
+static int knapSack(int W, int wt[], int val[], int n) 
+{ 
+     int[] dp=new int[W+1];
+
+     for(int i=1;i<=n;i++){
+         int[] dp1=new int[W+1];
+         for(int j=1;j<=W;j++){
+             if(j<wt[i-1])
+                dp1[j]=dp[j];
+            else{
+                // System.out.println((i-1)+" "+(wt[i-1]-j));
+                dp1[j]=Math.max(dp[j], val[i-1]+dp[j-wt[i-1]]);
+            }
+         }
+         dp=dp1;
+        //  System.out.println(Arrays.toString(dp[i]));
+     }
+
+     return dp[W];
+} 
