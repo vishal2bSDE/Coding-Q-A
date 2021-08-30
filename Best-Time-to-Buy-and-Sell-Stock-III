@@ -1,0 +1,51 @@
+Problem Link : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iii/
+------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+------------------------------------------------------------------------------------
+
+{
+    public int maxProfit(int[] prices) {
+        if(prices.length<2)
+            return 0;
+        
+        int[] left=minLeft(prices, prices.length); // lowest in the left side
+        int[] right=maxRight(prices, prices.length); // Largest in the right side
+        int max=0, res=0;
+        // System.out.println(Arrays.toString(left));
+        // System.out.println(Arrays.toString(right));
+        max=right[0]-prices[0];// if only 2 nos are present
+        res=max;
+        max=0;
+        for(int i=1;i<prices.length;i++){
+            res=Math.max(res, (right[i]-prices[i])+max); // As @max tx can 2 so adding maximum from i to n and maximum from 0 to (i-1)
+            max=Math.max(max, Math.abs(left[i]-prices[i])); // updating the max b/w 0 to (i-1) part 
+        }
+        
+        return res;
+    }
+    
+    private int[] minLeft(int[] prices, int n){
+        int[] res=new int[n];
+        res[0]=prices[0];
+        int min=res[0];
+        
+        for(int i=1;i<n;i++){
+            min=Math.min(min, prices[i]);// finding minimum b/w 0 to i. 
+            res[i]=min;
+        }
+        
+        return res;
+    }
+    private int[] maxRight(int[] prices, int n){
+        int[] res=new int[n];
+        res[n-1]=prices[n-1];
+        int max=res[n-1];
+        
+        for(int i=n-2;i>=0;i--){
+            max=Math.max(max, prices[i]);// finding maximum b/w i to n-1
+            res[i]=max;
+        }
+        
+        return res;
+    }
+}
