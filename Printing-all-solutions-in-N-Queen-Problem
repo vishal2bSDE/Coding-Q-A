@@ -1,0 +1,54 @@
+Problem Link : https://www.geeksforgeeks.org/printing-solutions-n-queen-problem/
+----------------------------------------------------------------------------------------
+Complexity : Time - O(N^3), Memory - O(N)(stack memory space)
+----------------------------------------------------------------------------------------
+
+{
+  void traverse(char[][] board, int r){
+    if(r==board.length){ // one permutation created
+      printBoard(board);
+      return;
+    }
+    
+    for(int j=0;j<board[0].length;j++){
+      if(safeCell(board, r, j)){
+        board[r][j]='Q'; // setting the pos
+        traverse(board, r+1);
+        board[r][j]=''; // re-setting the pos
+      }
+    }
+  }
+  
+  private boolean safeCell(char[][] board, int i, int j){
+    return up(board, i, j) & upLeft(board, i, j) & upRight(board, i, j);
+  }
+  private boolean up(char[][] board, int i, int j){
+    if(i<0)
+      return true;
+    if(board[i][j]=='Q')
+      return false;
+    return up(board, i-1, j);
+  }
+  private boolean upLeft(char[][] board, int i, int j){
+    if(i<0 || j<0)
+      return true;
+     if(board[i][j]=='Q')
+      return false;
+    return upLeft(board, i-1, j-1);
+  }
+  private boolean upRight(char[][] board, int i, int j){
+    if(i<0 || j>=board.length)
+      return true;
+     if(board[i][j]=='Q')
+      return false;
+    return upRight(board, i-1, j+1);
+  }
+  
+  private void printBoard(char[][] board){
+    System.out.println();
+    System.out.println("--------------------------------------------------");
+    for(char[] ch : board)
+      System.out.println(Arrays.toString(ch));
+    System.out.println("--------------------------------------------------");
+  }
+}
