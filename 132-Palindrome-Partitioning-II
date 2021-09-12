@@ -40,12 +40,12 @@ class Solution {
         
         return dp[n-1];
     }
-    public int get(int i, int[] dp){
+    private int get(int i, int[] dp){
         if(i<0)
             return 0;
         return dp[i];
     }
-    public boolean getBoolean(boolean[][] dp, int i, int j){
+    private boolean getBoolean(boolean[][] dp, int i, int j){
         if(i>j)
             return true;
         return dp[i][j];
