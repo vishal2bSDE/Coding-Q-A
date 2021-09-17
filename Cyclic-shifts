@@ -1,0 +1,40 @@
+Problem Link : https://www.hackerearth.com/practice/basic-programming/bit-manipulation/basics-of-bit-manipulation/practice-problems/algorithm/lets-shift-2-36d90caa/
+-----------------------------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(16 === 1), Memory - O(16 === 1)
+-----------------------------------------------------------------------------------------------------------------------------------
+
+class TestClass {
+    public static void main(String args[] ) throws Exception {
+      Scanner in = new Scanner(System.in);
+        int t=in.nextInt();
+        for(int t1=0;t1<t;t1++){
+            int n=in.nextInt(), m=in.nextInt();
+            char s=in.next(".").charAt(0);
+            // System.out.println(n+" "+s+" "+m);
+            System.out.println(cycle(s,m,n));
+        }
+    }
+    private static int cycle(char s, int m, int n){
+        String str=Integer.toBinaryString(n);
+        str=("0".repeat(16-str.length()))+str;
+        m%=16;
+        
+        if(s=='L')
+            str= leftCycle(m, str);
+        else
+            str= rightCycle(m, str);
+        
+        return Integer.parseInt(str, 2);
+    }
+    private static String leftCycle(int m, String str){
+        if(m==0 || m==str.length())
+            return str;
+        return str.substring(m, str.length())+str.substring(0, m);
+    }
+    private static String rightCycle(int m, String str){
+        if(m==0 || m==str.length())
+            return str;
+        int k=str.length()-m;
+        return str.substring(k, str.length())+str.substring(0, k);
+    }
+}
