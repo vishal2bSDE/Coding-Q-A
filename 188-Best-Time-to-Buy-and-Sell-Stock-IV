@@ -1,0 +1,36 @@
+Problem Link : https://leetcode.com/problems/best-time-to-buy-and-sell-stock-iv/
+-------------------------------------------------------------------------------------
+Complexity : Time - O(k*N), Memory - O(k*N)
+-------------------------------------------------------------------------------------
+
+{
+    int[][] dp;
+    public int maxProfit(int k, int[] prices) {
+        if(k==0 || prices.length<2)
+            return 0;
+        dp=new int[prices.length+1][k+1];
+        for(int[] arr : dp)
+            Arrays.fill(arr, -1);
+        
+        return traverse(0, prices, k);
+    }
+    private int traverse(int i, int[] arr, int k){
+        if(k==0 || i==arr.length-1 || i==arr.length)
+            return 0;
+        if(dp[i][k]!=-1)
+            return dp[i][k];
+        
+        int max=0, currMin=arr[i];
+        
+        for(int i1=i+1;i1<arr.length;i1++){
+            if(currMin<arr[i1])
+                max=Math.max(max, 
+                                (arr[i1]-currMin)+traverse(i1+1, arr, k-1));
+            
+            currMin=Math.min(currMin, arr[i1]);
+        }
+        dp[i][k]=max;
+        
+        return max;
+    }
+}
