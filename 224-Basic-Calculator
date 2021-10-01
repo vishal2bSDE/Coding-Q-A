@@ -1,0 +1,76 @@
+Problem link : https://leetcode.com/problems/basic-calculator/
+----------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+----------------------------------------------------------------------------------------
+
+{
+  public int calculate(String s) {
+        if(s.length()==1)return toInt(s);
+        
+        List<String> list=split(s); //splitting by num & operator
+        int res=0, i=0;
+        Stack<String> st=new Stack();
+        list.add(")");
+        st.push("(");
+        
+        while(true){
+            String cur=list.get(i);
+            if(!cur.equals(")"))
+                st.push(cur);
+            else{
+                res=calc(st);
+                if(st.isEmpty())
+                    break;
+                st.push(res+"");
+            }
+            ++i;
+        }
+        
+        return res;
+    }
+    private int toInt(String val) {
+        return Integer.parseInt(val);
+    }
+    private List<String> split(String str) {
+        List<String> list=new ArrayList();
+        int i=0;
+        
+        while(i<str.length()){
+            char ch=str.charAt(i);
+            if(ch=='-' || ch=='+' || ch=='(' || ch==')')
+                list.add(ch+"");
+            else if(ch!=' '){
+                int i1=i;
+                while(ch>='0' && ch<='9'){
+                    ++i1;
+                    if(i1==str.length())
+                        break;
+                    ch=str.charAt(i1);
+                }
+                list.add(str.substring(i, i1));
+                i=--i1;
+            }
+            ++i;
+        }
+        
+        return list;
+    }
+    private int calc(Stack<String> st) {
+        int add=0, sub=0; //as '+' has precedence over '-' thats why adding add+sub in the last
+        
+        while(!st.peek().equals("(")){
+            String val=st.pop();
+            if(st.peek().equals("+") || st.peek().equals("("))
+                add+=toInt(val);
+            else{
+                sub+=(-1*toInt(val));
+            }
+            if(st.peek().equals("("))
+                break;
+            st.pop();
+        }
+        st.pop();
+        
+        return add+sub;
+    }
+}
