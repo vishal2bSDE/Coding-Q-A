@@ -1,0 +1,84 @@
+Problem Link : https://leetcode.com/problems/integer-to-english-words/
+----------------------------------------------------------------------------
+Complexity : Time : O(len), Memory : O(len)
+----------------------------------------------------------------------------
+
+class Solution {
+    Map<Integer, String> map, place;
+    public String numberToWords(int num) {
+        if(num==0)
+            return "Zero";
+        
+        map=new HashMap();
+        place=new HashMap();
+        
+        map.put(0, "Zero"); map.put(1, "One"); map.put(2, "Two"); map.put(3, "Three"); map.put(4, "Four");
+        map.put(5, "Five"); map.put(6, "Six"); map.put(7, "Seven"); map.put(8, "Eight"); map.put(9, "Nine");
+        map.put(10, "Ten");
+        map.put(11, "Eleven"); map.put(12, "Twelve"); map.put(13, "Thirteen"); map.put(14, "Fourteen");
+        map.put(15, "Fifteen"); map.put(16, "Sixteen"); map.put(17, "Seventeen"); 
+        map.put(18, "Eighteen"); map.put(19, "Nineteen"); map.put(20, "Twenty");
+        for(int i=21;i<30;i++){
+            map.put(i, map.get(20)+" "+map.get(i-20));
+        }
+        map.put(30, "Thirty");
+        for(int i=31;i<40;i++){
+            map.put(i, map.get(30)+" "+map.get(i-30));
+        }
+        map.put(40, "Forty");
+        for(int i=41;i<50;i++){
+            map.put(i, map.get(40)+" "+map.get(i-40));
+        }
+        map.put(50, "Fifty");
+        for(int i=51;i<60;i++){
+            map.put(i, map.get(50)+" "+map.get(i-50));
+        }
+        map.put(60, "Sixty");
+        for(int i=61;i<70;i++){
+            map.put(i, map.get(60)+" "+map.get(i-60));
+        }
+        map.put(70, "Seventy");
+        for(int i=71;i<80;i++){
+            map.put(i, map.get(70)+" "+map.get(i-70));
+        }
+        map.put(80, "Eighty");
+        for(int i=81;i<90;i++){
+            map.put(i, map.get(80)+" "+map.get(i-80));
+        }
+        map.put(90, "Ninety");
+        for(int i=91;i<100;i++){
+            map.put(i, map.get(90)+" "+map.get(i-90));
+        }
+        
+        place.put(0, ""); place.put(1, "Thousand"); place.put(2, "Million"); place.put(3, "Billion");
+
+        return traverse(String.valueOf(num), 0).trim();
+    }
+    
+    private String traverse(String num, int l){
+        if(num.length()==0)return "";
+        
+        int s=(num.length()-3)<0 ? 0 : (num.length()-3);
+        
+        String head= traverse(num.substring(0, s), l+1).trim() +" ";
+        String mid=part(num.substring(s, num.length())) + " ";
+        String last=mid.equals(" ") ? "" : place.get(l);
+        
+        return (head+mid+last).trim();
+    }
+    
+    private String part(String num){
+        num="0".repeat(3-num.length())+num;
+        String tenP=map.get(Integer.parseInt(num.substring(1, 3)));
+        String hunP=map.get(Integer.parseInt(num.substring(0, 1)));
+        String O="Zero", IOO="Hundred";
+        
+        if(tenP.equals(O) && hunP.equals(O))
+            return "";
+        if(tenP.equals(O))
+            return hunP+" "+IOO;
+        if(hunP.equals(O))
+            return tenP;
+        return hunP+" "+IOO+" "+tenP;
+    }
+}
