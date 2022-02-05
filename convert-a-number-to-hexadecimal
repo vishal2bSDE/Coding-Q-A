@@ -1,0 +1,48 @@
+
+Problem Link : https://leetcode.com/problems/convert-a-number-to-hexadecimal/
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(1), Memory - O(1)
+-----------------------------------------------------------------------------------------------
+Despite of easy rank this question is quite a good warm-up for brain
+
+class Solution {
+    HashMap<Integer, Character> hex = new HashMap();
+    public String toHex(int num) {
+        if(num==0)
+            return "0";
+        hex.put(10, 'a');
+        hex.put(11, 'b');
+        hex.put(12, 'c');
+        hex.put(13, 'd');
+        hex.put(14, 'e');
+        hex.put(15, 'f');        
+        int counter=0;
+        String bin="", res="";
+        //this will help in -ve value or else the loop will iteratate infinitely
+        int max=32;
+        while(num!=0 && max>0){
+            counter++;
+            if((num&1)!=0)
+                bin="1"+bin;
+            else
+                bin="0"+bin;
+             //Taking 4 bit a time coz coversion is toHex == 4bit == 0-15
+            if(counter==4){
+                res=toHex(bin)+res;
+                bin="";
+                counter=0;
+            }
+            num>>=1;
+            --max;
+        }
+        if(counter!=0)
+            res=toHex(bin)+res;
+        return res;
+    }
+    private String toHex(String bin){
+        int val = Integer.parseInt(bin, 2);
+        if(val<10)
+            return val+"";
+        return hex.get(val)+"";
+    }
+}
