@@ -1,0 +1,42 @@
+Problem Link : https://leetcode.com/problems/longest-consecutive-sequence/
+----------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N), Time - 1-2 hr
+----------------------------------------------------------------------------
+Logic - Key hint in this Qs is <Consecutive Sequence>.
+
+First add every nos to set<> then iterate through the array elements
+and again traverse array if the array element and its consecutive is 
+present in the array then you can find it using set.contains(arr[i]) else store 
+this cnt in Map<I,I> and if the consecutive element is already counted then
+you can find it in Map<I,I> just add it and insert in Map<I,I>.
+----------------------------------------------------------------------------
+
+class Solution {
+    public int longestConsecutive(int[] nums) {
+        Set<Integer> set=new HashSet();
+        Map<Integer, Integer> map=new HashMap();
+        int max=0;
+        for(int i:nums)
+            set.add(i);
+        for(int i:nums){
+            int temp=i;
+            int cnt=1;
+            while(true){
+                set.remove(temp);
+                temp++;
+                if(set.contains(temp))
+                    ++cnt;
+                else{
+                    if(map.containsKey(temp))
+                        cnt+=map.get(temp);
+                    if(!map.containsKey(i))
+                        map.put(i, cnt);
+                    break;
+                }
+            }
+            max=Math.max(max, cnt);
+        }
+        
+        return max;
+    }
+}
