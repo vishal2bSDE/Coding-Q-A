@@ -1,0 +1,52 @@
+Problem Link - https://leetcode.com/problems/insert-interval/
+------------------------------------------------------------
+Complexity : Time- O(2N), Memory- O(2N), Time to solve- 1-2 hrs
+------------------------------------------------------------
+
+class Solution {
+    public int[][] insert(int[][] intervals, int[] newInterval) {
+    // Insert newInterval in intervals
+        intervals=add(intervals, newInterval);
+    // Compress int[][] to disjoint intervals
+        intervals=compress(intervals);
+        return intervals;
+    }
+    private int[][] add(int[][] intervals, int[] newI){
+        int size=intervals.length+1, j=0;
+        int[][] intervals1=new int[size][2];
+        for(int i=0;i<size;i++){
+            if(j<intervals.length && intervals[j][0]<newI[0]){
+                intervals1[i][0]=intervals[j][0];
+                intervals1[i][1]=intervals[j][1];
+                ++j;
+            }
+            else{
+                intervals1[i][0]=newI[0];
+                intervals1[i][1]=newI[1];
+                newI[0]=Integer.MAX_VALUE;
+            }
+        }
+        
+        return intervals1;
+    }
+    private int[][] compress(int[][] arr){
+        List<List<Integer>> compress=new ArrayList();
+        int[] temp=arr[0];
+        int[][] res;
+        for(int i=1;i<arr.length;i++){
+            if(temp[1]<arr[i][0]){
+                compress.add(List.of(temp[0], temp[1]));
+                temp=arr[i];
+            }else
+                temp[1]=Math.max(temp[1], arr[i][1]);
+        }
+        compress.add(List.of(temp[0], temp[1]));
+        res=new int[compress.size()][2];
+        for(int i=0;i<res.length;i++){
+            res[i][0]=compress.get(i).get(0);
+            res[i][1]=compress.get(i).get(1);
+        }
+            
+        return res;
+    }
+}
