@@ -1,0 +1,59 @@
+Problem Link : https://leetcode.com/problems/mini-parser/
+--------------------------------------------------------------
+Complexity : Memory-O(N), Time-O(N), TimeTaken- 2-3hrs
+--------------------------------------------------------------
+Logic-
+The Logic is that whenever you encounter a '[' send the string for next recurssion call and whenever you encounter
+']' return the value. And the trick i used in recurssion call is 'i' which is static to memorize the last index
+(This may be wrong but at this moment this is the only way i figure).
+DuringMomento-
+After some time i thought of giving up but at the same time i wanted to sort this out. So after using various
+little examples i was able to solve it. 
+---------------------------------------------------------------
+
+class Solution {
+    private  static int i;
+    public NestedInteger deserialize(String s) {
+        i=1;
+        if(s.charAt(0)!='['){
+            return new NestedInteger(Integer.parseInt(s));
+        }
+        return deserialize2(s);
+        /*
+        * The below commented lines are for just to understand the workflow of NestedInteger
+        */
+//         NestedInteger n=new NestedInteger();
+//         NestedInteger ni=new NestedInteger();
+//         ni.add(new NestedInteger(1));
+//         NestedInteger ni2=new NestedInteger();
+//         ni2.setInteger(3);
+//         ni.add(ni2);
+//         NestedInteger ni1=new NestedInteger();
+//         ni1.setInteger(3);
+//         ni1.add(new NestedInteger(2));
+//         ni.add(ni1);
+//         n.add(ni);
+//         return ni;
+    }
+    private NestedInteger deserialize2(String s){
+        NestedInteger ni=new NestedInteger();
+        String tmp="";
+        for(;i<s.length();i++){
+            char ch=s.charAt(i);
+            if(ch==','){
+                if(tmp.length()!=0)
+                    ni.add(new NestedInteger(Integer.parseInt(tmp)));
+                tmp="";
+            } else if(ch==']'){
+                if(tmp.length()!=0)
+                    ni.add(new NestedInteger(Integer.parseInt(tmp)));
+                return ni;
+            }else if(ch=='['){
+                i++;
+                ni.add(deserialize2(s));
+            } else if(ch=='-' || (ch>='0' && ch<='9'))
+                tmp+=ch;
+        }
+        return ni;
+    }
+}
