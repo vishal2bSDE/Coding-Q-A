@@ -1,0 +1,25 @@
+Problem Link : https://leetcode.com/problems/nested-list-weight-sum/
+--------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken- <30min
+--------------------------------------------------------------------------
+Logic-
+This problem is similar to flattening of List<List<SomeClass>>.
+You just calculate what is on the cur level and if you encounter any List send it to next level
+
+class Solution {
+    
+    public int depthSum(List<NestedInteger> nestedList) {
+        return depthSum(nestedList, 1);
+    }
+    private int depthSum(List<NestedInteger> list, int depth){
+        int sum1=0, sum2=0;
+        for(NestedInteger ni : list){
+            if(ni.isInteger()){
+                sum1+=ni.getInteger();
+            } else {
+                sum2+=depthSum(ni.getList(), depth+1);
+            }
+        }
+        return (sum1*depth)+sum2;
+    }
+}
