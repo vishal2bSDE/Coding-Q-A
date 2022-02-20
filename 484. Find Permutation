@@ -1,0 +1,37 @@
+Problem Link : https://leetcode.com/problems/find-permutation/
+-------------------------------------------------------------------
+Complexity : Memory-O(N), Time-O(N), TimeTaken-8hrs
+-------------------------------------------------------------------
+Logic:
+If you observe with multiple exs you will see that whenever 'D's is coming
+we just cnt from the last of that group of the Ds till that group start
+but whenever we see a group of Is we start the cnt from the group 
+start till that I group's N-1
+This is one of the best Qs that i have solved by myself :):)
+
+
+class Solution {
+    public int[] findPermutation(String s) {
+        // This is just a trick to ease the complexity
+        s=s.charAt(0)+s;
+        int[] arr=new int[s.length()];
+        int cnt=1, i=0;
+        while(i<s.length()){
+            char ch=s.charAt(i);
+            if(ch=='I'){
+                if(i==arr.length-1)arr[i]=cnt++;
+                else if(s.charAt(i+1)!='D')arr[i]=cnt++;
+                ++i;
+            } else{
+                int i1=i;
+                while(i1<s.length() && s.charAt(i1)=='D'){
+                    ++i1;++i;
+                }
+                --i1;
+                while(i1>=0 && arr[i1]==0)
+                    arr[i1--]=cnt++;
+            }
+        }
+        return arr;
+    }
+}
