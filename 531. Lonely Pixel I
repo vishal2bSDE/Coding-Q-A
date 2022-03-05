@@ -1,0 +1,43 @@
+Problem Link : https://leetcode.com/problems/lonely-pixel-i/
+--------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(r+c), TimeTake-2-3hrs
+--------------------------------------------------------------
+Logic:
+Suppose you want to find that A[i][j]==B is a loner or not 
+cond- ALone in row and col
+This is getting fullfilled by col[], row[]
+If a row[i]!=1 then its sure then that row is not a valid candidate
+but if it is 1 then we want to check for the next cond that is loner i col
+so for that we check col[j] for every index and also if col[j]==1
+then at place pic[i][j]=='B' with the help of this 3 cond we can find our count.
+--------------------------------------------------------------
+
+
+class Solution {
+    public int findLonelyPixel(char[][] picture) {
+        int[] row=new int[picture.length];
+        int[] col=new int[picture[0].length];
+        int r=row.length, c=col.length;
+        int cnt=0;
+        for(int i=0;i<row.length;i++){
+            for(int j=0;j<col.length;j++){
+                if(picture[i][j]=='B'){
+                    row[i]+=1;
+                    col[j]+=1;
+                }
+            }
+        }
+        for(int i=0;i<r;i++){
+            if(row[i]!=1)
+                continue;
+            for(int j=0;j<c;j++){
+                if(picture[i][j]=='B' && col[j]==1){
+                    ++cnt;
+                    break;
+                }
+            }
+        }
+        // System.out.println(cnt+" "+pair);
+        return cnt;
+    }
+}
