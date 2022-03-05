@@ -1,0 +1,35 @@
+Problem Link : https://leetcode.com/problems/beautiful-arrangement/
+--------------------------------------------------------------------------
+Complexity : Time-O(2^N), Memory-O(N), TimeTaken-15min
+--------------------------------------------------------------------------
+Logic :
+I used an array to simplify the complexity.
+Suppose array as the num from 1-n whenever we pick a num from array we put true there
+and send it next traversal and start to choose next num from start of the array and if 
+that index is already taken we try next index and in that way we create/ generate next perm
+and increase the counter
+--------------------------------------------------------------------------
+
+class Solution {
+    int count=0;
+    public int countArrangement(int n) {
+        traverse(new boolean[n], 0, 0);
+        return count;
+    }
+    private void traverse(boolean[] taken, int i, int len){
+        if(len==taken.length){
+            ++count;
+            return;
+        }
+        for(int i1=0;i1<taken.length;i1++){
+            if(!taken[i1] && isBeautiful(i+1, i1+1)){
+                taken[i1]=true;
+                traverse(taken, i+1, len+1);
+                taken[i1]=false;
+            }
+        }
+    }
+    private boolean isBeautiful(int i, int j){
+        return i%j==0 || j%i==0;
+    }
+}
