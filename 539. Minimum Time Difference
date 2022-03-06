@@ -1,0 +1,27 @@
+Problem Link : https://leetcode.com/problems/minimum-time-difference/
+----------------------------------------------------------------------
+Complexity: Time-O(N), Memory-O(N), TimeTaken-<20min
+----------------------------------------------------------------------
+Logic:
+First change the times to min form and sort them and find out the min time diff 
+in O(N) and for the corner case like to calculate time diff b/w last ele and first 
+just do lastele-(24*60)+firstele
+
+class Solution {
+    static int tm=24*60;
+    public int findMinDifference(List<String> timePoints) {
+        List<Integer> list=new ArrayList();
+        int res=Integer.MAX_VALUE;
+        for(String s:timePoints){
+            String[] tmp=s.split(":");
+            list.add((60*Integer.parseInt(tmp[0]))+Integer.parseInt(tmp[1]));
+        }
+        Collections.sort(list);
+        for(int i=0;i<list.size()-1;i++){
+            res=Math.min(res, list.get(i+1)-list.get(i));
+        }
+        int last=tm-list.get(list.size()-1);
+        res=Math.min(res, last+list.get(0));
+        return res;
+    }
+}
