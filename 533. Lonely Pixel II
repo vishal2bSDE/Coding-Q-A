@@ -1,0 +1,57 @@
+Problem Link : https://leetcode.com/problems/lonely-pixel-ii/
+----------------------------------------------------------------
+Complexity: Time-O(N^3), Memory-O(N^2), TimeTaken-1hr
+----------------------------------------------------------------
+Logic:
+For DP portion we first store nos of 'B' per row and col in 1D[]
+and also all the indexes of col which has 'B' for each row 
+and also all the indexes of row which has 'B' for each col
+in Map<Integer, List<Integer>>
+
+And for every row[] which has == target of 'B' is a valid candidate and
+also all the col[] which has == target of 'B' is a valid candidate and
+for each index of row which has 'B' for that particular col[] we will check whether 
+all the row[] of that list has 'B' in same place as the row[](the current one)
+
+if Yes then this place is valid and increase your cnt
+----------------------------------------------------------------
+
+class Solution {
+    public int findBlackPixel(char[][] picture, int target) {
+        int[] row=new int[picture.length];
+        int[] col=new int[picture[0].length];
+        Map<Integer, List<Integer>> rm=new HashMap();
+        Map<Integer, List<Integer>> cm=new HashMap();
+        int r=row.length, c=col.length;
+        int cnt=0;
+        for(int i=0;i<row.length;i++){
+            for(int j=0;j<col.length;j++){
+                if(picture[i][j]=='B'){
+                    row[i]+=1;
+                    col[j]+=1;
+                    if(!rm.containsKey(i))rm.put(i, new ArrayList());
+                    if(!cm.containsKey(j))cm.put(j, new ArrayList());
+                    rm.get(i).add(j);
+                    cm.get(j).add(i);
+                }
+            }
+        }
+        for(int i=0;i<r;i++){
+            if(row[i]!=target)
+                continue;
+            for(int j=0;j<c;j++){
+                if(picture[i][j]=='B' && col[j]==target && matches(rm.get(i), cm.get(j), rm)){
+                    ++cnt;
+                }
+            }
+        }
+        return cnt;
+    }
+    private boolean matches(List<Integer> l1, List<Integer> l2, Map<Integer, List<Integer>> rm){
+        for(int i=0;i<l2.size();i++){
+            if(!l1.equals(rm.get(l2.get(i))))
+                return false;
+        }
+        return true;
+    }
+}
