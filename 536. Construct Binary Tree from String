@@ -1,0 +1,47 @@
+Problem Link : https://leetcode.com/problems/construct-binary-tree-from-string/submissions/
+-------------------------------------------------------------------------------------------
+Complexity: Time-O(N), Memory-O(N), TimeTaken-<6hrs
+-------------------------------------------------------------------------------------------
+Logic:
+The logic is that first, treat every num as root and send the rest of the string for next iteration.
+The tricky part is handling ')' as it was hard to detect. So whenever you return from a iteration
+check if the curr index is ')' then increase and traverse for the next iteration and so on and so forth.
+-------------------------------------------------------------------------------------------
+
+class Solution {
+    int i=0;
+    public TreeNode str2tree(String s) {
+        return traverse(s.toCharArray());
+    }
+    private TreeNode traverse(char[] ch){
+        if(i==ch.length){
+            return null;
+        }
+        TreeNode root=new TreeNode();
+        String str="";
+        while(ch[i]=='(')
+            ++i;
+        while(i<ch.length && (ch[i]=='-' || Character.isDigit(ch[i]))){
+            str+=ch[i];
+            ++i;
+        }
+        if(str.length()!=0)
+            root.val=Integer.parseInt(str);
+        if(i<ch.length && ch[i]==')'){
+            ++i;
+            return root;
+        }
+        root.left=traverse(ch);
+        if(i<ch.length && ch[i]==')'){
+            ++i;
+            return root;
+        }
+        root.right=traverse(ch);
+        if(i<ch.length && ch[i]==')'){
+            ++i;
+            return root;
+        }
+        return root;
+            
+    }
+}
