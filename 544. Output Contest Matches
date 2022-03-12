@@ -1,0 +1,29 @@
+Problem Link : https://leetcode.com/problems/output-contest-matches/
+-----------------------------------------------------------------------------
+Complexity : Time-O(N*log(N)*stringconcatenationTime), Memory-O(N), TimeTaken-<1hr
+-----------------------------------------------------------------------------
+Logic :
+Hint here is to always match the player at index 1 with index n
+With the help of this we always match player with index 1 with n, i+1 with n-1 and so on
+and we repeat this process till we have only one element in list
+-----------------------------------------------------------------------------
+
+class Solution {
+    public String findContestMatch(int n) {
+        int rounds=(int)(Math.log(n)/Math.log(2));
+        List<String> teams=new ArrayList();
+        for(int i=1;i<=n;i++){
+            teams.add(i+"");
+        }
+        while(rounds>0){
+            int s=0, e=teams.size()-1;
+            List<String> round=new ArrayList();
+            while(s<e){
+                round.add("("+teams.get(s++)+","+teams.get(e--)+")");
+            }
+            teams=round;
+            --rounds;   
+        }
+        return teams.get(0);
+    }
+}
