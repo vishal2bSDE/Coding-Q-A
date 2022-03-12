@@ -1,0 +1,52 @@
+Problem Link : https://leetcode.com/problems/matchsticks-to-square/
+------------------------------------------------------------------------------
+Complexity : Time- O(2^n), Memory- O(2^n), TimeTaken- <1.5hr
+------------------------------------------------------------------------------
+Logic:
+As we know that each side of square has equal length so we can think of spliting the
+array in 4 parts each with sum==squaresum/4.
+We can memoize the state with the help of arr[] state.
+Corner case is when there is a ele whose length is > than 1side of square
+and also when the sum of arr[] is not divided by 4.
+------------------------------------------------------------------------------
+
+class Solution {
+    Map<String, Boolean> map;
+    public boolean makesquare(int[] matchsticks) {
+        int total=0, side1=0;
+        map=new HashMap();
+        for(int ele:matchsticks)
+            total+=ele;
+        side1=total/4;
+        if(side1*4!=total)
+            return false;
+        for(int ele:matchsticks){
+            if(ele>side1)
+                return false;
+        }
+        return traverse(matchsticks, side1, 0, 0, 0);
+    }
+    private boolean traverse(int[] arr, int side1, int sum, int len, int split){
+        if(split==3)return true;
+        String str=toString(arr);
+        if(map.containsKey(str))return map.get(str);
+        boolean flag=false;
+        for(int i=0;i<arr.length;i++){
+            int val=arr[i];
+            if(val==-1 || sum+val>side1)continue;
+            arr[i]=-1;
+            flag=traverse(arr, side1, side1==(sum+val) ? 0 : (sum+val), len+1, 
+                          side1==(sum+val) ? split+1 : split);
+            arr[i]=val;
+            if(flag)break;
+        }
+        map.put(str, flag);
+        return flag;
+    }
+    private String toString(int[] arr){
+        StringBuilder str=new StringBuilder("");
+        for(int ele:arr)
+            str.append(ele+",");
+        return str.toString();
+    }
+}
