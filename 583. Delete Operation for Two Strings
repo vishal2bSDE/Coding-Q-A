@@ -1,0 +1,32 @@
+Problem Link : https://leetcode.com/problems/delete-operation-for-two-strings/
+----------------------------------------------------------------------------------------
+Complexity: Time-O(N^2), Memory-O(N^2), TimeTaken-<30min
+----------------------------------------------------------------------------------------
+Logic:
+We iterate through each index and whenever we encounter same char we increase both indexes 
+and whevever we encounter diff char we take min(i+1, j+1) of string
+Base case is when eder one of them is out of bound we return remaining length of other string
+
+class Solution {
+    int[][] dp;
+    public int minDistance(String word1, String word2) {
+        dp=new int[word1.length()][word2.length()];
+        for(int[] temp:dp)
+            Arrays.fill(temp, -1);
+        return traverse(0, 0, word1, word2);
+    }
+    private int traverse(int i, int j, String str1, String str2){
+        if(i>=str1.length() && j>=str2.length())return 0;
+        if(i>=str1.length())return str2.length()-j;
+        if(j>=str2.length())return str1.length()-i;
+        if(dp[i][j]!=-1)return dp[i][j];
+        int val=0;
+        if(str1.charAt(i)==str2.charAt(j))
+            val=traverse(i+1, j+1, str1, str2);
+        else{
+            val=1+Math.min(traverse(i+1, j, str1, str2), traverse(i, j+1, str1, str2));
+        }
+        dp[i][j]=val;
+        return val;
+    }
+}
