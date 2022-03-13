@@ -1,0 +1,35 @@
+Problem Link: https://leetcode.com/problems/out-of-boundary-paths/
+--------------------------------------------------------------------------------
+Complexity: Time-O(N^3), Memory-O(N^3), TimeTaken-<20min
+--------------------------------------------------------------------------------
+Logic:
+Here we just travel till we exhaut the moves or we reach the boundary.
+hence from point (i,j) no of ways to reach boundary will be
+(i-1, j)+(i+1,j)+(i,j-1)+(i,j+1)
+To avoid repetency we use 3d[] with row,col,move as the state index
+
+
+class Solution {
+    int[][][] dp;
+    int mod=1000000007;
+    public int findPaths(int m, int n, int maxMove, int startRow, int startColumn) {
+        dp=new int[m][n][maxMove+1];
+        for(int i=0;i<m;i++){
+            for(int j=0;j<n;j++)
+                Arrays.fill(dp[i][j], -1);
+        }
+        return traverse(m, n, maxMove, startRow, startColumn);
+    }
+    private int traverse(int r, int c, int move, int i, int j){
+        if(i>=r || i<0 || j>=c || j<0)
+            return 1;
+        if(dp[i][j][move]!=-1)
+            return dp[i][j][move];
+        if(move==0)
+            return 0;
+        int val=((((traverse(r, c, move-1, i-1, j)%mod)+(traverse(r, c, move-1, i+1, j)%mod))%mod
+            +(traverse(r, c, move-1, i, j-1)%mod))%mod+(traverse(r, c, move-1, i, j+1)%mod))%mod;
+        dp[i][j][move]=val;
+        return val;
+    }
+}
