@@ -1,0 +1,40 @@
+Problem Link: https://leetcode.com/problems/minimum-ascii-delete-sum-for-two-strings/
+------------------------------------------------------------------------------------------------
+Complexity: Time-O(N^2), Memory-O(N^2), TimeTaken-<2hr
+------------------------------------------------------------------------------------------------
+Logic:
+TBH you wont belive i spent >1.5hr just to find out a typo. 
+We will use both i and j of strings as the dp state.
+And will just add the ascii val with the next recurssion and return it.
+If equal we will just return the recurssion. 
+
+class Solution {
+    int[][] dp;
+    public int minimumDeleteSum(String s1, String s2) {
+        dp=new int[s1.length()][s2.length()];
+        for(int i=0;i<s1.length();i++)
+            Arrays.fill(dp[i], -1);
+        
+        return traverse(s1.toCharArray(), 0, s2.toCharArray(), 0);
+    }
+    private int traverse(char[] ch1, int i, char[] ch2, int j){
+        if(i==ch1.length && j==ch2.length)return 0;
+        if(i==ch1.length)return toASCIISum(ch2, j);
+        if(j==ch2.length)return toASCIISum(ch1, i);
+        if(dp[i][j]!=-1)return dp[i][j];
+        int val=0;
+        int k1=ch1[i], k2=ch2[j];
+        if(ch1[i]==ch2[j])
+            val+=traverse(ch1, i+1, ch2, j+1);
+        else
+            val+=Math.min(traverse(ch1, i+1, ch2, j)+k1, traverse(ch1, i, ch2, j+1)+k2);
+        dp[i][j]=val;
+        return val;
+    }
+    private int toASCIISum(char[] ch, int i){
+        int sum=0;
+        for(int i1=i;i1<ch.length;i1++)
+            sum+=ch[i1];
+        return sum;
+    }
+}
