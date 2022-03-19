@@ -1,0 +1,54 @@
+Problem Link: https://leetcode.com/problems/partition-to-k-equal-sum-subsets/
+-------------------------------------------------------------------------------
+Complexity: Time-DontKnoe:~), Memory-DontKnoe:~), TimeTaken-<1hr
+-------------------------------------------------------------------------------
+Logic:
+Sorry i tried to figure out the TimeComplexity, MemoryComplexity but is not able to.
+So now exp. 
+First we check that the [] sum is sum%k==0 and also no element in [] 
+is > than sum/k else return false
+Now for state we store [] as string map. and whenever we encounter same comb
+we return stored. Now just traverse like a normal backtracking problem
+
+class Solution {
+    int eh=0;
+    int split=0;
+    HashMap<String, Boolean> map;
+    public boolean canPartitionKSubsets(int[] nums, int k) {
+        map=new HashMap();
+        int sum=0;
+        split=k;
+        for(int ele:nums)
+            sum+=ele;
+        eh=sum/k;
+        if(eh*k!=sum)return false;
+        for(int ele:nums){
+            if(ele>eh)return false;
+        }
+        return traverse(nums, 0, 0);
+    }
+    private boolean traverse(int[] nums, int sum, int done){
+        if(done==split)return true;
+        
+        String str=toString(nums);
+        if(map.containsKey(str))return map.get(str);
+        boolean flag=false;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==-1 || nums[i]+sum>eh)continue;
+            int val=nums[i];
+            nums[i]=-1;
+            boolean temp= (sum+val)==eh;
+            flag=traverse(nums, temp ? 0 : (sum+val), temp ? done+1 : done);
+            nums[i]=val;
+            if(flag)break;
+        }
+        map.put(str, flag);
+        return flag;
+    }
+    private String toString(int[] nums){
+        StringBuilder st=new StringBuilder("");
+        for(int ele:nums)
+            st.append(ele+",");
+        return st.toString();
+    }
+}
