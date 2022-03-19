@@ -1,0 +1,43 @@
+Problem Link: https://leetcode.com/problems/number-of-longest-increasing-subsequence/
+---------------------------------------------------------------------------------------
+Complexity: Time-O(N^2), Memory-O(N), TimeTaken-<2hrs
+---------------------------------------------------------------------------------------
+Logic:
+First we find longest subseq from 0 till i...N.
+Then with this we will get total nos of comb of longest
+subseq. 
+To get that we will check if (1+longestsubseq[j]==longestsubseq[i] and nums[j]<nums[i])
+  then we will add comb[i] with comb[j]
+Now we will sum all the comb[i] whose longestsubseq[i]==max then retuen it.
+
+class Solution {
+    public int findNumberOfLIS(int[] nums) {
+        int n=nums.length, max=1, ans=0, max_cnt=0;
+        int[] dp=new int[n];
+        int[] comb=new int[n];
+        Arrays.fill(dp, 1);
+        Arrays.fill(comb, 1);
+        for(int i=1;i<n;i++){
+            int val=0;
+            for(int j=i;j>=0;j--){
+                if(nums[j]<nums[i]){
+                    dp[i]=Math.max(dp[i], 1+dp[j]);
+                }
+            }
+            max=Math.max(max, dp[i]);
+        }
+        for(int i=1;i<n;i++){
+            int val=0;
+            for(int j=i-1;j>=0;j--){
+                if(dp[j]+1==dp[i] && nums[i]>nums[j])
+                    val+=comb[j];
+            }
+            comb[i]=Math.max(val, comb[i]);
+        }
+        for(int i=0;i<n;i++){
+            if(dp[i]==max)
+                max_cnt+=comb[i];
+        }
+        return max_cnt;
+    }
+}
