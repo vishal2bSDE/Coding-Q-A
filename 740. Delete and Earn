@@ -1,0 +1,51 @@
+Problem Link: https://leetcode.com/problems/delete-and-earn/
+-----------------------------------------------------------------
+Complexity: Time-O(NlogN), Memory-O(N), TimeTaken-1.5hr
+-----------------------------------------------------------------
+Logic:
+Suppose we have 2 nos (2,3)(for simplicity we will only use unique nos)
+then max val will be 2 or 3
+Next for (2,3,4) then max will be (2+4, 3)
+Hence if we try to find max at cur index to n then 
+  there will be 2 case
+    case 1 = a[i]==a[i+1]-1
+      max=Math.max(a[i]+a[i+2], a[i+1])
+     case 2 = a[i]!=a[i+1]-1
+     max=a[i]+max from i+1 to n
+ In this way we can also expand this algo for multiple occurs. Just by using map for freq storing
+ and a[] for unique nos and sort it
+ So for sorting O(NlogN)
+ and for finding max O(N)
+
+class Solution {
+    public int deleteAndEarn(int[] nums) {
+        HashMap<Integer, Integer> map=new HashMap();
+        int[] arr;
+        for(int ele:nums){
+            map.put(ele, map.getOrDefault(ele, 0)+1);
+        }
+        List<Integer> list=new ArrayList(map.keySet());
+        int n=map.size();
+        Collections.sort(list);
+        int[] dp=new int[n];
+        
+        int plus_2=map.get(list.get(n-1))*list.get(n-1), plus_1=0;
+        if(n>1 && list.get(n-2)+1==list.get(n-1))
+            plus_1=Math.max(plus_2, map.get(list.get(n-2))*list.get(n-2));
+        else if(n>1)
+            plus_1=plus_2 + map.get(list.get(n-2))*list.get(n-2);
+        
+        for(int i=n-3;i>=0;i--){
+            int ele=list.get(i);
+            int nplus_1=0, nplus_2=plus_1;
+            int mul=map.get(ele)*ele;
+            
+            if(ele+1==list.get(i+1))
+                nplus_1=Math.max(mul+plus_2, plus_1);
+            else
+                nplus_1=mul+plus_1;
+            plus_1=nplus_1; plus_2=nplus_2;
+        }
+        return Math.max(plus_1, plus_2);
+    }
+}
