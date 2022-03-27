@@ -1,0 +1,75 @@
+Problem Link : https://leetcode.com/problems/push-dominoes/
+-----------------------------------------------------------------
+Complexity: Time- O(N), Memory- O(N), TimeTaken-<1hr
+-----------------------------------------------------------------
+Logic:
+We will use a [] to store the state+time at which that index domino gets affected.
+If it is <0 the its affected first by left falling dominoe else right falling domino 
+and if it is affected at the same time by both left and right falling domino then that domino 
+is standing.
+So we will tranverse twice the domino. First we will travel from left to update [] by left falling
+then traverse from right to update [] by right falling domino.
+
+class Solution {
+    public String pushDominoes(String dominoes) {
+        int n=dominoes.length();
+        int[] dp=new int[n];
+        for(int i=0;i<n;i++){
+            char ch=dominoes.charAt(i);
+            if(ch=='.' || ch=='R')
+                continue;
+            fallLeft(dp, i, dominoes);
+        }
+        for(int i=n-1;i>=0;i--){
+            char ch=dominoes.charAt(i);
+            if(ch=='.' || ch=='L')
+                continue;
+            fallRight(dp, i, dominoes);
+        }
+        return toString(dp);
+    }
+    private void fallLeft(int[] dp, int i, String str){
+        dp[i]=-1;
+        i--;
+        while(i>=0){
+            char ch=str.charAt(i);
+            if(ch!='.')
+                break;
+            dp[i]=dp[i+1]-1;
+            --i;
+        }
+    }
+    private void fallRight(int[] dp, int i, String str){
+        dp[i]=1;
+        i++;
+        while(i<str.length()){
+            char ch=str.charAt(i);
+            if(ch!='.')
+                break;
+            if(dp[i]==0){
+                dp[i]=1+dp[i-1];
+            } else {
+                int t=Math.abs(dp[i]);
+                if(t==1+dp[i-1]){
+                    dp[i]=0;
+                    break;
+                } else if(t<1+dp[i-1])
+                    break;
+                dp[i]=1+dp[i-1];
+            }
+            ++i;
+        }
+    }
+    private String toString(int[] arr){
+        StringBuilder str=new StringBuilder();
+        for(int ele:arr){
+            if(ele==0)
+                str.append('.');
+            else if(ele>0)
+                str.append('R');
+            else
+                str.append('L');
+        }
+        return str.toString();
+    }
+}
