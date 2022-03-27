@@ -1,0 +1,35 @@
+Problem Link : https://leetcode.com/problems/longest-mountain-in-array/
+---------------------------------------------------------------------------
+Complexity: Time-O(N), Memory- O(1), TimeTaken- <30min
+---------------------------------------------------------------------------
+Logic:
+We will traverse from 1-n-2(0 indexed) for simplicity.
+Whenever we encounter a index whose [i-1]<[i]<[i+1] then we count the ele
+of both side till they are decreassing and add them.
+This way we can find the longest mountain.
+
+class Solution {
+    public int longestMountain(int[] arr) {
+        int max=0, left=0;
+        for(int i=1;i<arr.length-1;i++){
+            if(arr[i-1]<arr[i])
+                ++left;
+            else
+                left=0;
+            if(arr[i-1]<arr[i] && arr[i]>arr[i+1]){
+                max=Math.max(max, left+goRight(arr, i));
+                left=0;
+            }
+        }
+        return max;
+    }
+    private int goRight(int[] arr, int i){
+        int cnt=1;
+        ++i;
+        while(i<arr.length && arr[i]<arr[i-1]){
+            ++cnt;
+            ++i;
+        }
+        return cnt;
+    }
+}
