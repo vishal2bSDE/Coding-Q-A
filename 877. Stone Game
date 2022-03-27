@@ -1,0 +1,36 @@
+Problem Link : https://leetcode.com/problems/stone-game/
+------------------------------------------------------------
+Complexity: Time- O(2*N^2), Memory- O(2*N^2), TimeTaken- <40min
+------------------------------------------------------------
+Logic:
+We are using 3d[] because in 1 2d[] we store value for 1player and in another another's.
+So when its turn for 1st player we add arr[i] to the ans if its other player turn we just
+written max of both sides (because if we add then it will be sum of total []).
+So, in honestly we are finding here the max sum for player 1. hence in every place we are returning max.
+
+
+
+class Solution {
+    int[][][] dp;
+    public boolean stoneGame(int[] piles) {
+        int n=piles.length;
+        int total=Arrays.stream(piles).sum();
+        dp=new int[2][n][n];
+        int sum=traverse(0, n-1, piles, true);
+        return sum>total/2;
+    }
+    private int traverse(int i, int j, int[] arr, boolean turn){
+        int t= turn ? 0 : 1;
+        if(i==j)return 0;
+        if(dp[t][i][j]!=0)return dp[t][i][j];
+        int sum=0;
+        if(turn){
+            sum=Math.max(arr[i]+traverse(i+1, j, arr, false),
+                        arr[j]+traverse(i, j-1, arr, false));
+        } else {
+            sum=Math.max(traverse(i+1, j, arr, true), traverse(i, j-1, arr, true));
+        }
+        dp[t][i][j]=sum;
+        return sum;
+    }
+}
