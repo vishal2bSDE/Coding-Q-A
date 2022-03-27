@@ -1,0 +1,41 @@
+Problem Link : https://leetcode.com/problems/length-of-longest-fibonacci-subsequence/
+--------------------------------------------------------------------------------------
+Complexity: Time- O(N^2), Memory- O(N^2), TimeTaken- <3hrs
+--------------------------------------------------------------------------------------
+Logic:
+This question at first glance for me i thought was easy but when i started to draw it out
+i got flat. The most tough part about this Qs is to find the dynamic state. Thats what
+took most of my time. So the state as we know in fib seq a, b, c, d-> d depends on c and b
+and d can be form from many comb for ex lets take d as 8 then some combs are (2,6), (3,5) etc
+so to remember which combs i used to come to this sum i used N^2 [] and index as state. So whenever 
+we go for traversing we rem what is the comb i used to come here. and the base case is when there is no sum 
+present depending on the last sum.
+
+class Solution {
+    Map<Integer, Integer> map;
+    int[][] dp;
+    public int lenLongestFibSubseq(int[] arr) {
+        int n=arr.length;
+        int max=0;
+        map=new HashMap();
+        dp=new int[n][n];
+        
+        for(int i=0;i<n;i++)
+            map.put(arr[i], i);
+        for(int i=0;i<n-2;i++){
+            for(int j=i+1;j<n-1;j++){
+                int sum=arr[i]+arr[j];
+                max=Math.max(max, traverse(i, j, arr));
+            }
+        }
+        return max<3 ? 0 : max;
+    }
+    private int traverse(int i, int j, int[] arr){
+        if(!map.containsKey(arr[i]+arr[j]))return 2;
+        if(dp[i][j]!=0)return dp[i][j];
+        int max=1, sum=arr[i]+arr[j];
+        max+=traverse(j, map.get(sum), arr);
+        dp[i][j]=max;
+        return max;
+    }
+}
