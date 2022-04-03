@@ -1,0 +1,37 @@
+Problem Link : https://leetcode.com/problems/bitwise-ors-of-subarrays/
+------------------------------------------------------------------------
+Complexity: Time - O(N*N*logN), Memory - O(N), TimeTaken - <4hr
+------------------------------------------------------------------------
+Logic:
+We will take 2 sets each to store unique nos.
+Set1 will return ans.
+Set2 will give us unique nos with subarry cond intact.
+why use Set2 and temp?
+Suppose you put [i] inside Set2 now when you OR it with [i+1] the there
+will be 2 ele but now if you OR all the element of Set2 with [i+2] then the 
+subarry cond will break so to keep that intact we use new array to store all the new
+ORed ele inside one new Set(temp) and whenever we come out of the loop we assign it to
+Set2. This temp logic greatly helps in subarray cond as we update Set2 to temp.
+
+class Solution {
+    public int subarrayBitwiseORs(int[] arr) {
+        Set<Integer> set1=new HashSet();
+        Set<Integer> set2=new HashSet();
+        
+        set1.add(arr[0]);
+        set2.add(arr[0]);
+        
+        for(int i=1;i<arr.length;i++){
+            Set<Integer> temp=new HashSet();
+            temp.add(arr[i]);
+            set1.add(arr[i]);
+            for(int ele:set2){
+                temp.add(ele|arr[i]);
+                set1.add(ele|arr[i]);
+            }
+            set2=temp;
+        }
+        
+        return set1.size();
+    }
+}
