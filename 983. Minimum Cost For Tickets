@@ -1,0 +1,36 @@
+Problem Link : https://leetcode.com/problems/minimum-cost-for-tickets/
+----------------------------------------------------------------------
+Complexity: Time-O(N), Memory-O(N), TimeTaken-<2hrs
+----------------------------------------------------------------------
+Logic:
+The Qs is simple just add 1/7/30 to the day[i] and traverse i till day[i]<pass+day[j].
+And store the cost of from that day till end in dp[].
+
+
+class Solution {
+    int[] dp;
+    public int mincostTickets(int[] days, int[] costs) {
+        dp=new int[days.length];
+        traverse(0, costs, days);
+        // System.out.println(Arrays.toString(dp));
+        return dp[0];
+    }
+    private int traverse(int i, int[] csts, int[] days){
+        if(i>=days.length)return 0;
+        if(dp[i]!=0)return dp[i];
+        int min=Integer.MAX_VALUE;
+        
+        min=Math.min(min, csts[1]+traverse(nxtIdx(i, 7, days), csts, days));
+        min=Math.min(min, csts[0]+traverse(nxtIdx(i, 1, days), csts, days));
+        min=Math.min(min, csts[2]+traverse(nxtIdx(i, 30, days), csts, days));
+        
+        dp[i]=min;
+        return min;
+    }
+    private int nxtIdx(int i, int day, int[] arr){
+        int cap=arr[i]+day;
+        while(i<arr.length && cap>arr[i])
+            ++i;
+        return i;
+    }
+}
