@@ -1,0 +1,47 @@
+Problem Link : https://leetcode.com/problems/maximum-sum-of-two-non-overlapping-subarrays/
+------------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-<1.5hr
+------------------------------------------------------------------------------------------
+Logic :
+First we find the sum[] where sum[i] is the sum from 0 till i
+then find max sub[] sum of length first till i and store it in dp[]
+then again for each i > second len. ans will be equal to second len subarray + 
+max sub[] sum till i-secondLen which is stored in dp[]
+and also reverse the nums[] and do the same
+
+class Solution {
+    public int maxSumTwoNoOverlap(int[] nums, int firstLen, int secondLen) {
+        return Math.max(traverse(nums, firstLen, secondLen), traverse(reverse(nums), firstLen, secondLen));
+    }
+    private int traverse(int[] nums, int firstLen, int secondLen){
+         int n=nums.length, ans=0;
+        int[] stn=new int[n];
+        stn[0]=nums[0];
+        for(int i=1;i<n;i++)
+            stn[i]=stn[i-1]+nums[i];
+        if(firstLen>secondLen){
+            int temp=secondLen;
+            secondLen=firstLen;
+            firstLen=temp;
+        }
+        int[] dp=new int[n];
+        dp[firstLen-1]=stn[firstLen-1];
+        for(int i1=firstLen;i1<n;i1++){
+            dp[i1]=Math.max(stn[i1]-stn[i1-firstLen], dp[i1-1]);
+        }
+        for(int i=firstLen+secondLen-1;i<n;i++){
+            ans=Math.max(ans, dp[i-secondLen]+(stn[i]-stn[i-secondLen]));
+        }
+        return ans;
+    }
+    private int[] reverse(int[] arr){
+        int s=0, e=arr.length-1;
+        while(s<e){
+            int t=arr[s];
+            arr[s]=arr[e];
+            arr[e]=t;
+            ++s;--e;
+        }
+        return arr;
+    }
+}
