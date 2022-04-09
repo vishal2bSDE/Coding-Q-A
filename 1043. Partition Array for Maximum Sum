@@ -1,0 +1,29 @@
+Problem Link : https://leetcode.com/problems/partition-array-for-maximum-sum/
+-----------------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(N), TimeTaken-<1hr
+-----------------------------------------------------------------------------
+Logic :
+From each idx we go till (idx+k) and after each iteration we send the remain [] 
+to do the same and store the value in dp[] to avoid redundant duplication work.
+For each next iteration the value of that sub[] is len of that sub[]*max num in that sub[]
+and store in dp[idx]
+
+class Solution {
+    int[] dp;
+    public int maxSumAfterPartitioning(int[] arr, int k) {
+        dp=new int[arr.length];
+        Arrays.fill(dp, -1);
+        return traverse(0, arr, k);
+    }
+    private int traverse(int i, int[] arr, int k){
+        if(i>=arr.length)return 0;
+        if(dp[i]!=-1)return dp[i];
+        int max=0, maxNum=0;
+        for(int i1=i;i1<i+k && i1<arr.length;i1++){
+            maxNum=Math.max(maxNum, arr[i1]);
+            max=Math.max(max, ((i1-i+1)*maxNum)+traverse(i1+1, arr, k));
+        }
+        dp[i]=max;
+        return max;
+    }
+}
