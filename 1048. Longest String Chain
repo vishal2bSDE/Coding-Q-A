@@ -1,0 +1,61 @@
+Problem Link : https://leetcode.com/problems/longest-string-chain/
+-----------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(N), TimeTaken-<1hr
+-----------------------------------------------------------------------
+Logic :
+We first group every string based on their size and initialize dp for each string 
+with 1. The we go up by each level and check the predecessor cond if fulfills the take
+its val+1 and also if multiple string fullfills the cond just take the highest val.
+And then finally find the longest chain by traversing all the dp map entry.
+
+class Solution {
+    Map<String, Integer> dp;
+    public int longestStrChain(String[] words) {
+        dp=new HashMap();
+        Map<Integer, Set<String>> map=new HashMap();
+        int max=0;
+        for(String str:words){
+            if(!map.containsKey(str.length()))map.put(str.length(), new HashSet());
+            map.get(str.length()).add(str);
+            dp.put(str, 1);
+        }
+        for(int i=1;i<=16;i++){
+            updateLevel(i, map);
+        }
+        for(String str: words){
+            max=Math.max(max, dp.get(str));
+        }
+        return max;
+    }
+    private void updateLevel(int len, Map<Integer, Set<String>> map){
+        if(!map.containsKey(len) || !map.containsKey(len-1))return;
+        Set<String> child=map.get(len);
+        Set<String> pre=map.get(len-1);
+        Iterator<String> it1=child.iterator();
+        Iterator<String> it2;
+        while(it1.hasNext()){
+            String str1=it1.next();
+            it2=pre.iterator();
+            int max=1;
+            while(it2.hasNext()){
+                String str2=it2.next();
+                if(comp(str2, str1)){
+                    max=Math.max(max, 1+dp.get(str2));
+                }
+            }
+            dp.put(str1, max);
+        }
+    }
+    private boolean comp(String pre, String ch){
+        int i=0, j=0, cnt=0;
+        while(j<ch.length()){
+            if(i<pre.length() && pre.charAt(i)==ch.charAt(j)){
+                ++i;++j;
+            } else {
+                ++j;
+                ++cnt;
+            }
+        }
+        return cnt==1;
+    }
+}
