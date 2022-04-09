@@ -1,0 +1,51 @@
+Problem Link : https://leetcode.com/problems/video-stitching/
+-------------------------------------------------------------------
+Complexity : Time-O(NlogN) Memory-O(N), TimeTaken-<2hr
+-------------------------------------------------------------------
+Logic :
+First we sort the array then we traverse the array.
+For each iteration till some 'i' we iterate till 'i' till
+maxt is greater/ equal and also store the maxi for remembering the index
+whose end is the most far then we send the remaining array for next traverse.
+Base cond is that whenever we reach the end of array it means we haven't found the 
+end time hence return -1 and whenver we find the end time we return 1 and for a final base cond
+whenever we see a clip with disjoint interval it means that we cant form the req ans clip 
+hence return -1
+
+class Solution {
+    public int videoStitching(int[][] clips, int time) {
+       Integer[][] arr=new Integer[clips.length][2];
+        for(int i=0;i<clips.length;i++){
+            arr[i][0]=clips[i][0];
+            arr[i][1]=clips[i][1];
+        }
+        Arrays.sort(arr, (a, b)->{
+           if(a[0]==b[0])return a[1]-b[1];
+            return a[0]-b[0];
+        });
+        for(Integer[] i:arr)
+            System.out.println(i[0]+" , "+i[1]);
+        return traverse(0, arr, 0, time);
+    }
+    private int traverse(int i, Integer[][] arr, int maxt, int time){
+        if(i>=arr.length)
+            return -1;
+        System.out.println(i+" "+maxt);
+        int ans=-1;
+        int maxi=i;
+        boolean found=false;
+        while(i<arr.length && arr[i][0]<=maxt){
+            if(time<=arr[i][1])return 1;
+            if(arr[maxi][1]<=arr[i][1]){
+                maxi=i;
+                found=true;
+            }
+            ++i;
+        }
+        if(found)
+            ans=traverse(maxi+1, arr, arr[maxi][1], time);
+        if(ans==-1)
+            return -1;
+        return ans+1;
+    }
+}
