@@ -1,0 +1,56 @@
+Problem Link: https://leetcode.com/problems/largest-1-bordered-square/
+-------------------------------------------------------------------------
+Complexity: Time-O(N^3), Memory-O(N^2), TimeTkae-<4hrs
+-------------------------------------------------------------------------
+Logic:
+We first take 2 2d[] for dp to store continuous 1 in vertical and horizontal way.
+Then for each idx we travel further till we find 1 and also the diff b/w these 2 points in 
+vertical dir doesn't exceed r and also contains all 1 and will repeat to check for all the remain
+2 dir.
+
+class Solution {
+    public int largest1BorderedSquare(int[][] grid) {
+        int r=grid.length, c=grid[0].length, max=0;
+        int[][] hdp=new int[r][c];
+        int[][] vdp=new int[r][c];
+        
+        for(int i=0;i<r;i++)
+            hdp[i][0]=grid[i][0];
+        for(int i=0;i<c;i++)
+            vdp[0][i]=grid[0][i];
+        
+        for(int i=0;i<r;i++){
+            for(int j=1;j<c;j++){
+                if(grid[i][j]==0)
+                    continue;
+                hdp[i][j]=1+hdp[i][j-1];
+            }
+        }
+        for(int i=1;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(grid[i][j]==0)
+                    continue;
+                vdp[i][j]=1+vdp[i-1][j];
+            }
+        }
+        for(int i=0;i<r;i++){
+            for(int j=0;j<c;j++){
+                if(grid[i][j]==0)
+                    continue;
+                for(int k=j;k<c;k++){
+                    if(grid[i][k]==0 || (k-j+i)>=r)
+                        break;
+                    int side1=k-j+1;
+                    int side2=vdp[k-j+i][k]-vdp[i][k]+1;
+                    int side3=hdp[k-j+i][k]-hdp[k-j+i][j]+1;
+                    int side4=vdp[k-j+i][j]-vdp[i][j]+1;
+                    if(side1==side2 && side1==side3 && side1==side4){
+                        max=Math.max(max, side1*side2);
+                    }
+                        
+                }
+            }
+        }
+        return max;
+    }
+}
