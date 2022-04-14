@@ -1,0 +1,36 @@
+Problem Link : https://leetcode.com/problems/stone-game-ii/
+------------------------------------------------------------
+Complexity : Time-O(N*2), Memory-O(N^2), TimeTaken-Saw the YT video :(
+------------------------------------------------------------
+Logic :
+The concept here is that we just find the diff of stones of 2 players collected from idx i -> n
+and at the end return (total[]sum+(+ because the returning value can be -ve also and it 'll get handle auto)diff)/2
+
+
+class Solution {
+    int[][] dp;
+    public int stoneGameII(int[] piles) {
+        int n=piles.length;
+        dp=new int[n][2*n];
+        for(int i=0;i<n;i++){
+            for(int j=0;j<2*n;j++)
+                dp[i][j]=Integer.MIN_VALUE;
+        }
+        int sum=0;
+        for(int ele:piles)
+            sum+=ele;
+        return (int)(sum+traverse(0, piles, 1))/2;
+    }
+    private int traverse(int i, int[] arr, int m){
+        if(i>=arr.length)return 0;
+        if(dp[i][m]!=Integer.MIN_VALUE)return dp[i][m];
+        int sum=0, max=Integer.MIN_VALUE;
+        for(int j=0;j<2*m;j++){
+            if(j+i>=arr.length)break;
+            sum+=arr[i+j];
+            max=Math.max(max, sum-traverse(i+j+1, arr, Math.max(m, j+1)));
+        }
+        dp[i][m]=max;
+        return max;
+    }
+}
