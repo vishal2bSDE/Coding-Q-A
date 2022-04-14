@@ -1,0 +1,33 @@
+Problem Link : https://leetcode.com/problems/longest-arithmetic-subsequence-of-given-difference/submissions/
+----------------------------------------------------------------------------------------------------------------------------------------
+Complexity : Memory-O(N), Time-O(N), TimeTaken-4hr
+----------------------------------------------------------------------------------------------------------------------------------------
+Logic:
+So the concept is simple if you have seen some ele save it in map. 
+And whenever we find a[i]+d we just increase this ele val as we have saved its
+predecessor in map.
+
+class Solution {
+    Map<Integer, Integer> fmap=new HashMap();
+    Map<Integer, Integer> bmap=new HashMap();
+    int n;
+    public int longestSubsequence(int[] arr, int difference) {
+        n=arr.length;
+        int max=0;
+        return bdp(arr, difference);
+    }
+    private int bdp(int[] arr, int difference){
+        int max=1;
+        for(int i=n-1;i>=0;i--){
+            int prev=difference+arr[i];
+            if(!bmap.containsKey(arr[i]))bmap.put(arr[i], 0);
+            if(bmap.containsKey(prev)){
+                bmap.put(arr[i], bmap.get(prev)+1);
+            } else {
+                bmap.put(arr[i], 1);
+            }
+            max=Math.max(max, bmap.get(arr[i]));
+        }
+        return max;
+    }
+}
