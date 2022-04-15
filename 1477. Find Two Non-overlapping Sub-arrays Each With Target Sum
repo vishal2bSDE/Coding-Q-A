@@ -1,0 +1,36 @@
+Problem Link : https://leetcode.com/problems/find-two-non-overlapping-sub-arrays-each-with-target-sum/
+---------------------------------------------------------------------------------------------------
+Complexity : Time -O(N), Memory-O(N), TimeTaken-3hr
+---------------------------------------------------------------------------------------------------
+Logic :
+So the logic is that if we at any idx we find sub[] of sum target then we see if there is any other sub[] sum before this
+block and add them. And also maintain a min_block which will help to know what is min len sub[] before that block.
+
+class Solution {
+    public int minSumOfLengths(int[] arr, int target) {
+        int MAX=Integer.MAX_VALUE;
+        int n=arr.length;
+        int[] dp=new int[n];
+        Map<Integer, Integer> map=new HashMap();
+        int ans=MAX;
+        int sum=0;
+        int cmin=MAX;
+        for(int i=0;i<n;i++){
+            sum+=arr[i];
+            if(sum>target){
+                int prev=sum-target;
+                if(map.containsKey(prev) && dp[map.get(prev)]!=MAX){
+                    int idx=map.get(prev);
+                    ans=Math.min(ans, dp[idx]+(i-idx));
+                    cmin=Math.min(cmin, i-idx);
+                } else if(map.containsKey(prev))
+                    cmin=i-map.get(prev);
+            } else if(sum==target){
+                cmin=Math.min(cmin, i+1);
+            }
+            dp[i]=cmin;
+            map.put(sum, i);
+        }
+        return ans==MAX ? -1 : ans;
+    }
+}
