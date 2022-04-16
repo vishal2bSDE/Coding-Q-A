@@ -1,0 +1,48 @@
+Problem Link : https://leetcode.com/problems/maximum-length-of-subarray-with-positive-product/
+------------------------------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-<30min
+------------------------------------------------------------------------------------------------------------
+Logic :
+To find maxLen we keep a -ve no cnt and also use -neidx which will store first -ve no.
+So, at each idx we see if -ve cnt is even we just update max with i+1 or if odd then we take 
+max(max, i - -veidx). 
+But the thing that makes this Qs more difficult is that zero constraint. So, to handle this when-
+ever we encounter '0' just reset ever thing except max.
+So the change due to this will be whenever we have even -ve cnt instead of just updating the max with i+1
+we use max(max, recentZeroIdx - i) and the rest are same.
+
+class Solution {
+    public int getMaxLen(int[] nums) {
+        int nidx=-1;
+        int ncnt=0;
+        int max=0;
+        int zidx=-1;
+        for(int i=0;i<nums.length;i++){
+            if(nums[i]==0){
+                zidx=i;
+                nidx=-1;
+                ncnt=0;
+            }
+            if(nums[i]<0){
+                if(nidx==-1)
+                    nidx=i;
+                ++ncnt;
+            }
+            if(zidx==-1){
+                if(ncnt%2==0){
+                    max=i+1;
+                }else {
+                    max=Math.max(max, i-nidx);
+                }
+            } else {
+                if(ncnt%2==0){
+                    max=Math.max(max, i-zidx);
+                } else {
+                    max=Math.max(max, i-nidx);
+                }
+            }
+        }
+        
+        return max;
+    }
+}
