@@ -1,0 +1,51 @@
+Problem Link : https://leetcode.com/problems/ways-to-make-a-fair-array/
+------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-<1hr
+------------------------------------------------------------------------------------
+Logic :
+We use 2 dp[] one forward and one backward. In each dp[] for even idx store sum of 
+even idx till that point and odd idx till that point.
+So, to find out the sub[] after element removal if fair or not we have to add fdp[i-1]+bdp[i+2] and fdp[i-2]+bdp[i+1] check if they are
+equal. bdp[] will help us to find the sub[] sum which turned even to odd and vice versa.
+
+
+class Solution {
+    public int waysToMakeFair(int[] nums) {
+        int n=nums.length;
+        if(n==1)return 1;
+        int[] fdp=new int[n];
+        int[] bdp=new int[n];
+        int cnt=0;
+        boolean f=n%2==0;
+        fdp[0]=nums[0];
+        fdp[1]=nums[1];
+        for(int i=2;i<n;i++){
+            fdp[i]=nums[i];
+            if(i%2==0)
+                fdp[i]+=fdp[i-2];
+            else
+                fdp[i]+=fdp[i-2];
+        }
+        
+        bdp[n-1]=nums[n-1];
+        bdp[n-2]=nums[n-2];
+        for(int i=n-3;i>=0;i--){
+            bdp[i]=nums[i];
+            if(i%2==0)
+                bdp[i]+=bdp[i+2];
+            else
+                bdp[i]+=bdp[i+2];
+        }
+        
+        for(int i=0;i<n;i++){
+            if(get(fdp, i-1)+get(bdp, i+2)==get(fdp, i-2)+get(bdp, i+1))
+        }
+        
+        return cnt;
+    }
+    private int get(int[] arr, int i){
+        if(i>=arr.length || i<0)
+            return 0;
+        return arr[i];
+    }
+}
