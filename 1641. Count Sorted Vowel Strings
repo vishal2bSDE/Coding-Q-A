@@ -1,0 +1,29 @@
+Problem Link : https://leetcode.com/problems/count-sorted-vowel-strings/
+------------------------------------------------------------------------
+Complexity : Time-O(N), Mempry-O(N), TimeTaken-<30min
+------------------------------------------------------------------------
+Logic :
+So for simplicity i subed vowel with 0-4. 
+Logic is that for n len string we loop over 5 times for each n with i>=iPassedToThis till 4 recurssion
+
+class Solution {
+    int[][] dp;
+    public int countVowelStrings(int n) {
+        dp=new int[5][n];
+        int sum=0;
+        for(int i=0;i<5;i++)
+            sum+=traverse(i, 0, n);
+        return sum;
+    }
+    private int traverse(int v, int i, int n){
+        if(i==n-1)return 1;
+        if(dp[v][i]!=0)return dp[v][i];
+        
+        int sum=0;
+        for(int i1=v;i1<5;i1++)
+            sum+=traverse(i1, i+1, n);
+        
+        dp[v][i]=sum;
+        return sum;
+    }
+}
