@@ -1,0 +1,64 @@
+Problem Link : https://leetcode.com/problems/best-team-with-no-conflicts/
+--------------------------------------------------------------------------
+Complexity : Time-O(N^2+NlogN), Memory-O(N), TimeTaken-<2hr
+--------------------------------------------------------------------------
+Logic :
+We first sort the [] based on their age and score. Then we just have to check 
+the arr[i].age with arr[i1].age (i1>i) and its a bottom up dp approach so
+we dont have to check further coz that is handled by the bottom up dp approach.
+Acc to me corner case is when there is multiple same age with diff score then we add
+dp[i] with dp[i+i1]. this logic might faile because there might be some age with diff score
+and this might break the cond. So to resolve this we just have to add a logic in sorting
+that is that [] based on age and if age is equal then sort on score.
+
+class Person{
+    int age, score;
+    Person(){}
+    Person(int a, int s){
+        age=a;
+        score=s;
+    }
+}
+class Solution {
+    int[] dp;
+    int max;
+    public int bestTeamScore(int[] scores, int[] ages) {
+        int n=scores.length;
+        Person[] list=new Person[n];
+        dp=new int[n];
+        
+        max=Integer.MIN_VALUE;
+        for(int i=0;i<n;i++){
+            list[i]=new Person(ages[i], scores[i]);
+        }
+        Arrays.fill(dp, -1);
+        
+        Arrays.sort(list, (a1, a2) -> {
+            if(a1.age==a2.age)
+                return a1.score-a2.score;
+           return a1.age-a2.age;
+            });
+        for(int i=0;i<n;i++)
+            traverse(i, list);
+        return max;
+    }
+    private int traverse(int i, Person[] list){
+        if(i+1==list.length){max=Math.max(max, list[i].score);return list[i].score;}
+        if(i>=list.length)return 0;
+        if(dp[i]!=-1)return dp[i];
+        
+        int maxt=Integer.MIN_VALUE;
+        
+        for(int i1=i+1;i1<list.length;i1++){
+            if(list[i].age==list[i1].age || list[i].score<=list[i1].score)
+                maxt=Math.max(maxt, traverse(i1, list));
+        }
+        if(maxt!=Integer.MIN_VALUE)
+            dp[i]=maxt+list[i].score;
+        else
+            dp[i]=list[i].score;
+        
+        max=Math.max(dp[i], max);
+        return dp[i];
+    }
+}
