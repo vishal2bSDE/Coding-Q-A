@@ -1,0 +1,40 @@
+Problem Link : https://leetcode.com/problems/maximum-subarray-sum-after-one-operation/
+---------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-7days
+---------------------------------------------------------------------------------------
+Logic :
+We make a forwarddp[] and backwarddp[] and at each cell [i] we calc max sum till 'i' including [i].
+After that we iterate from i...n and at each i we multiple arr[i] with itself and add forwarddp[i-1]
+and backwarddp[i+1] to find the sub[] sum including that idx and also take the max and return it.
+
+class Solution {
+    public int maxSumAfterOperation(int[] nums) {
+        int n=nums.length;
+        int[] fdp=new int[n];
+        int[] bdp=new int[n];
+        int rsum=0, max=0;
+        for(int i=0;i<n;i++){
+            rsum+=nums[i];
+            if(rsum<0)
+                rsum=0;
+            fdp[i]=rsum;
+        }
+        rsum=0;
+        for(int i=n-1;i>=0;i--){
+            rsum+=nums[i];
+            if(rsum<0)
+                rsum=0;
+            bdp[i]=rsum;
+        }
+        for(int i=0;i<n;i++){
+            max=Math.max(max, get(fdp, i-1)+nums[i]*nums[i]+get(bdp, i+1));
+        }
+        
+        return max;
+    }
+    private int get(int[] arr, int i){
+        if(i<0 || i>=arr.length)
+            return 0;
+        return arr[i];
+    }
+}
