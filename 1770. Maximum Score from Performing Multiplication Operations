@@ -1,0 +1,53 @@
+Problem Link : https://leetcode.com/problems/maximum-score-from-performing-multiplication-operations/
+--------------------------------------------------------------------------------------------------
+Complexity : Time-O(M*M), Memory-O(M*M), TimeTaken-SawOnYT
+--------------------------------------------------------------------------------------------------
+Logic :
+So the logic here is that if we have exp s,e,i comb we save it and whenever we face the same state 
+just return it. The toughest part of this Qs is to find out the state that wont get us MLE error.
+So, the avoid that we will use here 'm' and 's' as we know the max no of ele we can extract from 
+nums[] is 'm' and if we know value of i(which rep mul idx), ans 's'(which rep left side of nums idx) we can find out 
+'e'(which rep right side of nums idx) e=nums.len - (i-s)-1 {This is a very useful trick!!!}
+
+class Solution {
+    int[][] dp;
+    public int maximumScore(int[] nums, int[] multipliers) {
+        dp=new int[nums.length][nums.length];       
+        for(int i=0;i<nums.length;i++)
+            Arrays.fill(dp[i], -1);
+        return traverse(0, multipliers, 0, nums);
+    }
+    private int traverse(int i, int[] mul, int s, int[] nums){
+        if(i>=mul.length)return 0;
+        if(dp[i][s]!=-1)return dp[i][s];
+        
+        int e=nums.length-1-(i-s);
+        int max=Math.max(mul[i]*nums[s]+traverse(i+1, mul, s+1, nums),
+                                mul[i]*nums[e]+traverse(i+1, mul, s, nums));
+        
+        dp[i][s]=max;
+        return max;
+    }
+}
+
+/*class Solution {
+    int[][] dp;
+    public int maximumScore(int[] nums, int[] multipliers) {
+        dp=new int[nums.length][nums.length];       
+        for(int i=0;i<nums.length;i++)
+            Arrays.fill(dp[i], -1);
+        return traverse(0, multipliers, nums.length-1, nums);
+    }
+    private int traverse(int s, int[] nums, int e, int[] mul){
+        int i=s+(mul.length-e-1);
+        if(i>=nums.length)return 0;
+        if(dp[s][e]!=-1)return dp[s][e];
+        
+        // int e=mul.length-(i-s)-1;
+        int max=Math.max(nums[i]*mul[s]+traverse(s+1, nums, e, mul),
+                                nums[i]*mul[e]+traverse(s, nums, e-1, mul));
+        
+        dp[s][e]=max;
+        return max;
+    }
+}*/
