@@ -1,0 +1,33 @@
+Problem Link : https://leetcode.com/problems/minimum-sideway-jumps/
+------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-3hr
+------------------------------------------------------------------
+Logic :
+So the logic is that if we are standing at a lane at 'i' step.
+Then the minimum step from that cell to 'n' will be min([samelane][i+1],
+(1or2)+[difflane][i+1]). The only rest is that we skip the cell whose [samelane][i+1]
+or [difflane][i] or [difflane][i+1] does't has obstacle. In the code below i followed bottom up approach.
+
+class Solution {
+    public int minSideJumps(int[] obstacles) {
+        int n=obstacles.length;
+        int[][] dp=new int[3][n];
+        
+        for(int i=n-2;i>=0;i--){
+            dp[0][i]=get(dp, obstacles, 0, i);
+            dp[1][i]=get(dp, obstacles, 1, i);
+            dp[2][i]=get(dp, obstacles, 2, i);
+        }
+        return dp[1][0];
+    }
+    private int get(int[][] dp, int[] arr, int lane, int i){
+        int ans=Integer.MAX_VALUE;
+        if(arr[i]-1!=(lane+1)%3 && arr[i+1]-1!=(lane+1)%3)
+            ans=1+dp[(lane+1)%3][i+1];
+        if(arr[i]-1!=(lane+2)%3 && arr[i+1]-1!=(lane+2)%3)
+            ans=Math.min(ans, 1+dp[(lane+2)%3][i+1]);
+        if(arr[i]-1!=lane && arr[i+1]-1!=lane)
+            ans=Math.min(ans, dp[lane][i+1]);
+        return ans;
+    }
+}
