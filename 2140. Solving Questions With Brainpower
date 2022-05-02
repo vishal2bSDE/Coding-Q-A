@@ -1,0 +1,25 @@
+Problem Link : https://leetcode.com/problems/solving-questions-with-brainpower/
+--------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-<30min
+--------------------------------------------------------------------------------
+Logic :
+So to find the max points from i to n-1 we for each i we take max of i+1 and points[i]+point[i+brainpower[i]+1].
+Concept is that for each i the max will we including the ith point or excluding.
+
+class Solution {
+    public long mostPoints(int[][] arr) {
+        int n=arr.length;
+        long[] dp=new long[n];
+        dp[n-1]=arr[n-1][0];
+        
+        for(int i=n-2;i>=0;i--){
+            dp[i]=Math.max(dp[i+1], arr[i][0]+get(i+arr[i][1]+1, dp));
+        }
+        
+        return dp[0];
+    }
+    private long get(int i, long[] dp){
+        if(i>=dp.length)return 0;
+        return dp[i];
+    }
+}
