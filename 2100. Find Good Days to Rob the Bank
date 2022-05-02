@@ -1,0 +1,47 @@
+Problem Link : https://leetcode.com/problems/find-good-days-to-rob-the-bank/
+------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-1hr
+------------------------------------------------------------------------------
+Logic:
+We take 2 1d[], 1 to store consecutive decrease nos till 0 - ith and other n-1 - ith same doing backwards.
+For every ith pos we take the len of consecutive nos in both side with the help of the [].
+
+class Solution {
+    public List<Integer> goodDaysToRobBank(int[] arr, int time) {
+        int n=arr.length;
+        int[] fdp=new int[n];
+        int[] bdp=new int[n];
+        List<Integer> list=new ArrayList();
+        
+        fdp[0]=1;
+        bdp[n-1]=1;
+        
+        for(int i=1;i<n;i++){
+            fdp[i]=1;
+            if(arr[i-1]>=arr[i])
+                fdp[i]+=fdp[i-1];
+        }
+        for(int i=n-2;i>=0;i--){
+            bdp[i]=1;
+            if(arr[i+1]>=arr[i])
+                bdp[i]+=bdp[i+1];
+        }
+        
+        for(int i=0;i<n;i++){
+            if(isValid(i, fdp, bdp, time))
+                list.add(i);
+        }
+        // System.out.println(Arrays.toString(fdp));
+        // System.out.println(Arrays.toString(bdp));
+        
+        return list;
+    }
+    private boolean isValid(int m, int[] fdp, int[] bdp, int t){
+        int s=m-t;
+        int e=m+t;
+        if(s<0 || e>=fdp.length)
+            return false;
+        
+        return (fdp[m]-fdp[s])==t && (bdp[m]-bdp[e])==t;
+    }
+}
