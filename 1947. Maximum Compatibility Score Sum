@@ -1,0 +1,51 @@
+Problem Link : https://leetcode.com/problems/maximum-compatibility-score-sum/
+------------------------------------------------------------------------------
+Complexity : Time-O((N*2^N)*N), Memory-O(N*2^N), TimeTaken-2hr
+------------------------------------------------------------------------------
+Logic :
+We take a 2d[] of size n and 2^n-1.
+2^n-1 because this number represent the state of a array ie a idx is already used or
+not. For ex : 6 -> 110 -> which means 2nd idx is used and 0 and 1 idx are available so and
+so forth. This helps greatly to reduse the time.
+Now at each recurssion we set the student idx and for mentor idx we use state to find out which
+idx is available as explained above. We select available idx and change its value to 0 and
+send for other recsurssion. In this way we find out the max score.
+
+class Solution {
+    int[][] dp;
+    public int maxCompatibilitySum(int[][] students, int[][] mentors) {
+        int m=students.length;
+        int n=(int)Math.pow(2, students.length)-1;
+        dp=new int[m][n+1];
+        
+        for(int i=0;i<m;i++)
+            Arrays.fill(dp[i], -1);
+        
+        return traverse(m-1, students, mentors, n);
+    }
+    private int traverse(int i, int[][] s, int[][] m, int state){
+        if(i==-1)return 0;
+        if(dp[i][state]!=-1){return dp[i][state];}
+        int max=0;
+        int len=m.length;
+        for(int i1=0;i1<len;i1++){
+            int idx=1<<i1;
+            if((idx&state)==0)
+                continue;
+            state^=idx;
+            max=Math.max(max, score(s[i], m[i1])+traverse(i-1, s, m, state));
+            state^=idx;
+                
+        }
+        dp[i][state]=max;
+        return max;
+    }
+    private int score(int[] arr1, int[] arr2){
+        int score=0;
+        for(int i=0;i<arr1.length;i++){
+            if(arr1[i]==arr2[i])
+                ++score;
+        }
+        return score;
+    }
+}
