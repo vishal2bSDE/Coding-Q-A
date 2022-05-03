@@ -1,0 +1,34 @@
+Problem Link : https://leetcode.com/problems/number-of-ways-to-build-house-of-cards/
+------------------------------------------------------------------------------------
+Complexity : Time-O(N^3), Memory-O(N^2), TimeTaken-2hr
+------------------------------------------------------------------------------------
+Logic :
+So the state in this problem will be nos of card and nos of base at particular time.
+
+
+class Solution {
+    int[][] dp;
+    public int houseOfCards(int n) {
+        dp=new int[510][510];
+        for(int i=0;i<510;i++)
+            Arrays.fill(dp[i], -1);
+        return traverse(n, 250);
+    }
+    private int traverse(int card, int base){
+        if(card==2 || card==0)return 1;
+        if(card==1)return 0;
+        if(dp[card][base]!=-1){return dp[card][base];}
+        int cnt=0, nBase=0, c=card, b=base;
+        card-=2;
+        base--;
+        
+        while(card>=3 && base>0){
+            nBase++;
+            base--;
+            card-=3;
+            cnt+=traverse(card, nBase);
+        }
+        
+        return dp[c][b]=cnt;
+    }
+}
