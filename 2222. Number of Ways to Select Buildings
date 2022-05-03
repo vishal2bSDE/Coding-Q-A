@@ -1,0 +1,43 @@
+Problem Link : https://leetcode.com/problems/number-of-ways-to-select-buildings/
+---------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-2hr
+---------------------------------------------------------------------------------
+Logic :
+So the logic here is that we calculate all zero/ ones till ith idx.
+And for every idx for ex : take if arr[i]==0 then we use one[] and we multiply
+cnt of 1 till i-1th with i+1th idx and we do the same if arr[i]==1 but with
+zero[].
+
+class Solution {
+    public long numberOfWays(String s) {
+        long cnt=0;
+        int n=s.length();
+        long[] zero=new long[n];
+        long[] one=new long[n];
+        
+        for(int i=0;i<n;i++){
+            if(s.charAt(i)=='0'){
+                zero[i]=1+get(zero, i-1);
+                one[i]=get(one, i-1);
+            } else {
+                one[i]=1+get(one, i-1);
+                zero[i]=get(zero, i-1);
+            }
+        }
+        // System.out.println(Arrays.toString(one));
+        // System.out.println(Arrays.toString(zero));
+
+        for(int i=1;i<n-1;i++){
+            if(s.charAt(i)=='0'){
+                cnt+=(one[i-1]*(one[n-1]-one[i]));
+            } else {
+                cnt+=(zero[i-1]*(zero[n-1]-zero[i]));
+            }
+        }
+        return cnt;
+    }
+    private long get(long[] arr, int i) {
+        if(i<0)return 0;
+        return arr[i];
+    }
+}
