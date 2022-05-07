@@ -1,0 +1,59 @@
+Problem Link : https://leetcode.com/problems/minimum-factorization/
+---------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1), TimeTaken-<1hr
+---------------------------------------------------------------------
+Logic :
+First we find out all the factors of the num. Then mul the nos till the product is
+less than 10 and whenever the product is about to be >=10 then we add the product to 
+a list. Then we sort the list. And convert it to int. If it is > than 32 bit return 0
+else.
+
+class Solution {
+    public int smallestFactorization(int num) {
+        if(num==1)return 1;
+        int fact=2;
+        List<Integer> list=new ArrayList();
+        
+        while(num>1){
+            if(num%fact==0){
+                list.add(fact);
+                num/=fact;
+            } else {
+                fact++;
+            }
+            if(fact>9)
+                return 0;
+        }
+
+        return (int)Math.min(get(list, 1), get(list, -1));
+    }
+    private int get(List<Integer> list, int add){
+        List<Integer> nums=new ArrayList();
+        int n=list.size();
+        int i= add<0 ? n-1 : 0;
+        int nxtNum=1;
+        long res=0;
+        
+        while(i>=0 && i<n) {
+            if(list.get(i)*nxtNum>=10) {
+                nums.add(nxtNum);
+                nxtNum=list.get(i);
+            } else 
+                nxtNum*=list.get(i);
+            i+=add;
+        }
+        if(nxtNum!=1)
+            nums.add(nxtNum);
+        Collections.sort(nums);
+        for(int ele:nums){
+            res=(res*10)+ele;
+            if(!is32BitSignedInteger(res))
+                return 0;
+        }
+        
+        return (int)res;
+    }
+    public static boolean is32BitSignedInteger(long num) {
+        return (num <= 2147483647) && (num >= -2147483648);
+    }
+}
