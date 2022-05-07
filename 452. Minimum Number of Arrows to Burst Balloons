@@ -1,0 +1,39 @@
+Problem Link : https://leetcode.com/problems/minimum-number-of-arrows-to-burst-balloons/
+----------------------------------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(1), TimeTaken-<45min
+----------------------------------------------------------------------------------------
+Logic :
+So, acc to me whenever we encounter some kind of prob related with point[] in most of the case
+we need o sort them, as i did here. 
+The intution is that first sort then traverse the [] and maintain a 
+last idx which will hold the point of last idx which will help in to maintain the firing point of arrow
+(Note : we will always fire arrow from the end of the point always). And at every idx we compare the points[last][1]
+with points[i][1] to see whose endi is smaller and update last acc. Because we already know that i will be atleast equal
+to points[last] because [] is sorted. And whenever the points[last] is smaller than points[i] then we update last and also
+increase the cnt.
+
+class Solution {
+    public int findMinArrowShots(int[][] points) {
+        int n=points.length;
+        int cnt=1, i=1, last=0;
+        Arrays.sort(points, (a, b)->{
+            if(a[0]!=b[0])return a[0]-b[0];
+            return a[1]-b[1];
+        });
+        
+        while(i<n){
+            if(points[last][0]>points[i][1] || points[last][1]<points[i][0]){
+                ++cnt;
+                last=i;
+                i++;
+            } else {
+                if(points[last][1]>points[i][1])
+                    last=i;
+                ++i;
+            }
+            
+        }
+        
+        return cnt;
+    }
+}
