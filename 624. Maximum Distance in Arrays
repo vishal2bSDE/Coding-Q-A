@@ -1,0 +1,29 @@
+Problem Link : https://leetcode.com/problems/maximum-distance-in-arrays/
+------------------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(1), TimeTaken-<1hr
+------------------------------------------------------------------------
+Logic :
+We sort the list first acc to ascending order based on 1st val of each list and
+if 2 lists have same value at idx 0 then sort them acc to last val of both of them.
+Then take the abs diff of the min val with the rest of the list last val, also there is 
+a corner case where 2nd list 0th idx and 1st list last idx may form the largest abs diff.
+
+class Solution {
+    public int maxDistance(List<List<Integer>> arrays) {
+        int n=arrays.size();
+        Collections.sort(arrays, (a, b)->{
+            if(a.get(0)==b.get(0))return a.get(a.size()-1) - b.get(b.size()-1);
+            return a.get(0)-b.get(0);
+        });
+        
+        int max=0;
+        int s=arrays.get(0).get(0);
+        for(int i=1;i<n;i++){
+            max=Math.max(max, Math.abs(s-arrays.get(i).get(arrays.get(i).size()-1)));
+        }
+        s=arrays.get(1).get(0);
+        max=Math.max(max, Math.abs(s-arrays.get(0).get(arrays.get(0).size()-1)));
+        
+        return max;
+    }
+}
