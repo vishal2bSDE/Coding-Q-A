@@ -1,0 +1,41 @@
+Problem Link : https://leetcode.com/problems/split-array-into-consecutive-subsequences/
+----------------------------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(N), TimeTaken-1hr
+----------------------------------------------------------------------------------------
+Logic :
+We will use a bucket logic here. Each ele will belong to a bucket and the ele will be added to latest added bucket if there is multiple
+buket with same ele as their last element.
+We can improve the time by storing the bucket idx it will make the timeComp O(N^2) -> O(N). And everything
+will be as it is.
+
+
+class Solution {
+    public boolean isPossible(int[] nums) {
+        
+        int n=nums.length;
+        List<Stack<Integer>> buckets=new ArrayList();
+        for(int ele:nums){
+            add(ele, buckets, buckets.size()-1);
+        }
+        for(Stack<Integer> st:buckets){
+            if(st.size()<3)return false;
+        }
+        
+        return true;
+    }
+    private void add(int ele, List<Stack<Integer>> buckets, int lidx){
+        
+        while(lidx>=0){
+            if(buckets.get(lidx).peek()+1==ele){
+                buckets.get(lidx).push(ele);
+                return;
+            }
+            if(ele-buckets.get(lidx).peek()>1)
+                break;
+            lidx--;
+        }
+        Stack<Integer> st=new Stack();
+        st.push(ele);
+        buckets.add(st);
+    }
+}
