@@ -1,0 +1,33 @@
+Problem Link : https://leetcode.com/problems/max-chunks-to-make-sorted/
+-----------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1)(only recurssive stack space which is O(N), TimeTaken-2hr
+-----------------------------------------------------------------------
+Logic :
+We use greedy kind approach here to divide the [] in max partition such that after
+sorting each of them individually then concat them the [] is sorted, we can exploit the
+point the point that the elements are unique and the element will range from 0-n-1
+which mean that if we want to sort all prtitions and concat them, the partition
+property will be : each partion range from start idx and end idx should contain the min
+element as start and max as end if we find them then that partition is as small as we can cut it.
+Then go for next recurstion and do same.
+
+class Solution {
+    public int maxChunksToSorted(int[] arr) {
+        return traverse(arr, 0);
+    }
+    private int traverse(int[] arr, int s){
+        if(s==arr.length)return 0;
+        int min=arr[s];
+        int max=arr[s];
+        int res=0;
+        for(int e=s;e<arr.length;e++){
+            min=Math.min(arr[e], min);
+            max=Math.max(arr[e], max);
+            if(s==min && max==e){
+                res=1+traverse(arr, e+1);
+                break;
+            }
+        }
+        return res;
+    }
+}
