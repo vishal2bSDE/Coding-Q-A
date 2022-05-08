@@ -1,0 +1,54 @@
+Problem Link : https://leetcode.com/problems/dota2-senate/
+------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1), TimeTaken-30min
+------------------------------------------------------------
+Logic :
+Here i have cnt the R and D and if at anytime of iteration either
+of R/ D becomes we announce the winner. So the logic is that whenever
+we reach a senator who has his/ her rights then it'll use it power to ban the very next 
+opposition senator. 
+
+class Solution {
+    public String predictPartyVictory(String senate) {
+        int r=0, d=0;
+        int banR=0, banD=0, n=8;
+        
+        char[] ch=senate.toCharArray();
+        for(char c: ch){
+            if(c=='R'){
+                ++r;
+            } else {
+                ++d;
+            }
+        }
+        if(d==0)return "Radiant";
+        if(r==0)return "Dire";
+        while(n>0){
+            for(int i=0;i<ch.length;i++){
+                char c=ch[i];
+                if(c=='R'){
+                    if(banR>0){
+                        --banR;
+                        ch[i]='X';
+                    } else {
+                        ++banD;
+                        --d;
+                    }
+                    if(d==0)return "Radiant";
+                } else if (c=='D'){
+                    if(banD>0){
+                        --banD;
+                        ch[i]='X';
+                    } else {
+                        ++banR;
+                        --r;
+                    }
+                    if(r==0)return "Dire";
+                }
+            }
+            --n;
+        }
+        
+        return "X";
+    }
+}
