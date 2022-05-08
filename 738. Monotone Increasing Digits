@@ -1,0 +1,53 @@
+Problem Link : https://leetcode.com/problems/monotone-increasing-digits/
+-------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-3hr
+-------------------------------------------------------------------------
+Logic :
+So, we first break the num then if the num is following monotonic seq its fine but if its not
+we just put num[i]-1 at that place and reset the rest of the fill cell with 9. Then convert the []
+into it int and return.
+
+
+class Solution {
+    public int monotoneIncreasingDigits(int num) {
+        if(num==0)return 0;
+        
+        List<Integer> list=new ArrayList();
+        Stack<Integer> st=new Stack();
+        while(num>0){
+            list.add(num%10);
+            num/=10;
+        }
+        int n=list.size();
+        int i=0;
+        int cur=list.get(i);
+        int[] res=new int[n];
+        for(i=0;i<n;i++){
+            if(list.get(i)==cur){
+                res[i]=cur;
+            } else if(list.get(i)>cur){
+                res[i]=list.get(i)-1;
+                cur=res[i];
+                fill9(res, 0, i);
+            } else {
+                res[i]=list.get(i);
+                cur=res[i];
+            }
+        }
+        
+        return toInt(res);
+    }
+    private void fill9(int[] arr, int s, int e){
+        while(s<e){
+            arr[s]=9;
+            ++s;
+        }
+    }
+    private int toInt(int[] res){
+        int num=0;
+        for(int i=res.length-1;i>=0;i--){
+            num=(num*10)+res[i];
+        }
+        return num;
+    }
+}
