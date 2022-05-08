@@ -1,0 +1,59 @@
+Problem Link : https://leetcode.com/problems/maximum-swap/
+----------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-2hr
+----------------------------------------------------------
+Logic :
+So, whenever we have Qs like to swap a digit of a no, in most of 
+the case we have to use stack DS or something simillar.
+So here i used stack to store the idx of integer in strictly asc order fashion. 
+So the first element of stack will be the smallest and top one will be biggest 
+element in stack. After that we will traverse the [] and find the right candidate which satisfy
+1. the top element of stack, idx will be > than this element idx
+2. The element should also be strictly lesser 
+And at any point if any idx satisfies these cond we do swap and we got our answer.
+
+
+class Solution {
+    public int maximumSwap(int num) {
+        List<Integer> list=new ArrayList();
+        Stack<Integer> st=new Stack();
+        while(num>0){
+            list.add(num%10);
+            num/=10;
+        }
+        Collections.reverse(list);
+        int n=list.size();
+        int i=n-1;
+        while(i>=0){
+            if(st.isEmpty() || list.get(st.peek())<list.get(i)){
+                st.push(i);
+            } i--;
+        }
+        
+        i=0;
+        while(!st.isEmpty() && i<n){
+            if(list.get(st.peek())!=list.get(i) && i<st.peek()){
+                swap(list, i, st.peek());
+                break;
+            } else if(i>st.peek()){
+                st.pop();
+            } else 
+                i++;
+        }
+        
+        return toString(list);
+    }
+    private void swap(List<Integer> list, int i, int j){
+        int t1=list.get(i);
+        int t2=list.get(j);
+        list.set(i, t2);
+        list.set(j, t1);
+    }
+    private int toString(List<Integer> list){
+        int num=0;
+        for(int i=0;i<list.size();i++){
+            num=(num*10)+list.get(i);
+        }
+        return num;
+    }
+}
