@@ -1,0 +1,28 @@
+Problem Link : https://leetcode.com/problems/rabbits-in-forest/
+---------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-1hr
+---------------------------------------------------------------
+Logic :
+So, the intution here is that if there is 'n1' nums of rabbit of same type
+then all 'n1' of them at max will give same ans and if the cnt of 'n1' is 
+more than 'n1+1' then (totalCntOfn1-n1+1) is left for another color so add this 
+to the ans.
+
+class Solution {
+    public int numRabbits(int[] answers) {
+        HashMap<Integer, Integer> map=new HashMap();
+        for(int cnt : answers){
+            map.put(cnt, map.getOrDefault(cnt, 0)+1);
+        }
+        int num=0;
+        Iterator<Integer> it=map.keySet().iterator();
+        
+        while(it.hasNext()){
+            int n=it.next();
+            num+=((map.get(n)/(n+1))*(n+1));
+            if(map.get(n)%(n+1)!=0)
+                num+=(n+1);
+        }
+        return num;
+    }
+}
