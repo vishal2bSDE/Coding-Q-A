@@ -1,0 +1,37 @@
+Problem Link : https://leetcode.com/problems/hand-of-straights/
+---------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(N), TimeTaken-2hr
+---------------------------------------------------------------
+Logic :
+We store the freq of each nos in map then sort the [] then traverse 
+the [] at each idx if that ele is not used in creating a group then use it 
+and see if we can form a group of desired size only.
+
+
+class Solution {
+    public boolean isNStraightHand(int[] hand, int groupSize) {
+        HashMap<Integer, Integer> map=new HashMap();
+        for(int ele : hand){
+            map.put(ele, map.getOrDefault(ele, 0)+1);
+        }
+        
+        Arrays.sort(hand);
+        for(int i=0;i<hand.length;i++){
+            if(!map.containsKey(hand[i]))
+                continue;
+            
+            if(!traverse(map, hand[i], groupSize))
+                return false;
+        }
+        return true;
+    }
+    private boolean traverse(HashMap<Integer, Integer> map, int cur, int size){
+        if(size==0)return true;
+        if(!map.containsKey(cur))return false;
+        boolean res=traverse(map, cur+1, size-1);
+        map.put(cur, map.get(cur)-1);
+        if(map.get(cur)==0)
+            map.remove(cur);
+        return res;
+    }
+}
