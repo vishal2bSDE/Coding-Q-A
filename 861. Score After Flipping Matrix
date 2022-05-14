@@ -1,0 +1,52 @@
+Problem Link : https://leetcode.com/problems/score-after-flipping-matrix/
+-------------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(1), TimeTaken-4hr
+-------------------------------------------------------------------------
+Logic :
+So the intution here is that we will convert all the RMB of 0->1 because we know the 
+value RMB gives is greatest in binary even if we convert all the 0->1 except the RMB.
+After that for each col we try to max the cnt of 1 if the cnt of 1 in n'th col is greater
+we dont reverse that row or otherwise.
+
+class Solution {
+    public int matrixScore(int[][] grid) {
+        int r=grid.length, c=grid[0].length;
+        int ans=0;
+        for(int i=0;i<r;i++){
+            if(grid[i][0]==0)reverseRow(i, grid);
+        }
+        for(int i=1;i<c;i++){
+            int z=0;
+            for(int j=0;j<r;j++){
+                if(grid[j][i]==0)
+                    ++z;
+            }
+            if(z>r-z)
+                reverseCol(i, grid);
+        }
+        for(int i=0;i<r;i++){
+            ans+=toInt(i, grid);
+        }
+        return ans;
+    }
+    private void reverseRow(int r, int[][] grid){
+        for(int i=0;i<grid[0].length;i++){
+            grid[r][i]^=1;
+        }
+    }
+    private void reverseCol(int c, int[][] grid){
+        for(int i=0;i<grid.length;i++){
+            grid[i][c]^=1;
+        }
+    }
+    private int toInt(int r, int[][] grid){
+        int res=0;
+        int pow=0;
+        for(int i=grid[0].length-1;i>=0;i--){
+            if(grid[r][i]==1)
+                res+=(1<<pow);
+            ++pow;
+        }
+        return res;
+    }
+}
