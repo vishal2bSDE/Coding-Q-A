@@ -1,0 +1,33 @@
+Problem Link : https://leetcode.com/problems/bag-of-tokens/
+-----------------------------------------------------------
+Complexity - Time-O(NlogN), Memory-O(1), TimeTaken-30min
+-----------------------------------------------------------
+Logic:
+So the intution here is that from the available token select the min pow
+tokens and increase you score otherwise consume the max pow token 
+increasing power and decreasing score.
+
+
+class Solution {
+    public int bagOfTokensScore(int[] tokens, int power) {
+        Arrays.sort(tokens);
+        int score=0;
+        int s=0, e=tokens.length-1;
+        while(s<=e){
+            if(power<tokens[s] && score==0)
+                break;
+            if(power>=tokens[s]){
+                ++score;
+                power-=tokens[s];
+                s++;
+            } else if(s!=e){
+                power+=tokens[e];
+                --e;
+                --score;
+            } else
+                --e;
+        }
+        
+        return score;
+    }
+}
