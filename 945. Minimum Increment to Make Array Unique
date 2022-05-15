@@ -1,0 +1,31 @@
+Problem Link : https://leetcode.com/problems/minimum-increment-to-make-array-unique/
+------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(N), TimeTaken-1hr
+------------------------------------------------------------------------------------
+Logic :
+At first we take [] of twice the size of max value then use that [] as freq counter
+for elements and we start traverseing from 0. 
+Then if the freq of that idx is >1 then 
+it means we have to make this idx(element) unique to do that we increase all the occurence 
+of that element leaving 1 occurence and increase the counter of [(idx+1)] by the value of this 
+[idx]-1 and repeat this process for all idx(element)
+
+
+class Solution {
+    public int minIncrementForUnique(int[] nums) {
+        int[] dp=new int[(int)(2*1e5)+1];
+        int moves=0;
+        for(int ele:nums){
+            dp[ele]+=1;
+        }
+        
+        for(int i=0;i<dp.length;i++){
+            if(dp[i]==0 || dp[i]==1)continue;
+            moves+=dp[i]-1;
+            dp[i+1]+=dp[i]-1;
+            dp[i]=1;
+        }
+        
+        return moves;
+    }
+}
