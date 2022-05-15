@@ -1,0 +1,33 @@
+Problem Link : https://leetcode.com/problems/array-of-doubled-pairs/
+--------------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(N), TimeTaken-30min
+--------------------------------------------------------------------
+Logic :
+We sort the array and use a map to store the freq. Then we start from the lowest num
+and see if there is any num that satisfies the cond if yes decrease both elements freq from
+the map. And after the loop see if map is empty or not.
+
+class Solution {
+    public boolean canReorderDoubled(int[] arr) {
+        Arrays.sort(arr);
+        Map<Integer, Integer> map=new HashMap();
+        for(int ele : arr){
+            map.put(ele, map.getOrDefault(ele, 0)+1);
+        }
+        
+        for(int i=0;i<arr.length;i++){
+            int ele2=2*arr[i];
+            if(map.containsKey(arr[i]) && map.containsKey(ele2)){
+                map.put(arr[i], map.get(arr[i])-1);
+                map.put(ele2, map.get(ele2)-1);
+                
+                if(map.get(arr[i])==0)
+                    map.remove(arr[i]);
+                if(map.containsKey(ele2) && map.get(ele2)==0)
+                    map.remove(ele2);
+            }
+            if(map.isEmpty())return true;
+        }
+        return map.isEmpty();
+    }
+}
