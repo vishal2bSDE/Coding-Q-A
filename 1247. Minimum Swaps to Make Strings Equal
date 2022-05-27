@@ -1,0 +1,62 @@
+Problem Link : https://leetcode.com/problems/minimum-swaps-to-make-strings-equal/
+------------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1), TimeTaken-<3hr
+------------------------------------------------------------------------------------------
+Logic :
+Firstly we compare the strs and see if the count of diff is odd then its not possible 
+because to make the un equal str to equal we must have even nos of diff coz if you swap char
+from match places it will again make the strs unequal. Hence we need even places of diff to make 
+the strs equal.
+Now the algo is that if we have 'x' in str1 >1 then str1 will give 1 of it 'x' to str2
+and take its 'y' in 1 move which will make 2 idx equal.
+if nos of 'x' in str1 is 1 then firstly we have to take 1 'x' from str2 in 1 move then in other
+move we have to place that 'x' in str2 again but in front of the curr place to make both the idx equal.
+When in str1's 'x' value becomes 0 then we break the loop and add half of (max count of x or y) 
+Ex -> suppose after loop we will have something like this 
+  str1="xx", str2="yy" then just swap 1 char str1="xy" str2 = "xy" which will make both of strs equal.
+
+class Solution {
+    public int minimumSwap(String s1, String s2) {
+        int[] s1a=new int[2], s2a=new int[2];
+        int diff=0, move=0;
+        for(int i=0;i<s1.length();i++){
+            int c1=s1.charAt(i);
+            int c2=s2.charAt(i);
+            if(c1==c2)
+                continue;
+            s1a[c1-'x']+=1;
+            s2a[c2-'x']+=1;
+            diff+=1;
+        }
+        
+        if(diff%2!=0)
+            return -1;
+        diff/=2;
+        
+        int[] max = s2a, min = s1a;
+        if(s1a[0]>s2a[0]){
+            min=s2a;
+            max=s1a;
+        }
+        while(max[0]>0){
+            if(max[0]>1){
+                move+=1;
+                max[0]-=2;
+                min[1]-=2;
+            } else {
+                move+=2;
+                max[0]+=1;
+                min[0]-=1;
+                max[1]-=1;
+                min[1]+=1;
+            
+                max[0]-=2;
+                min[1]-=2;
+            }
+        }
+        
+        move+=(Math.max(s1a[1], s2a[1])/2);
+        
+        return move;
+    }
+}
