@@ -1,0 +1,41 @@
+Problem Link : https://leetcode.com/problems/reduce-array-size-to-the-half/
+----------------------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(N), TimeTaken-<2hr
+----------------------------------------------------------------------------
+Logic :
+We first cnt the element occurence then we take a queue after that we keep adding 
+element occurence value inside that queue also will keep a cnt will store the value.
+Then whenever the cnt  gets greater than arr.length/2 then we start polling element from
+queue also subtracting the val from cnt. and will stop when cnt get <arr.length/2 also will keep
+track of last element which was popped. So that we can add it back again in the queue. At last 
+just return the size of queue.
+
+
+class Solution {
+    public int minSetSize(int[] arr) {
+        Map<Integer, Integer> map=new HashMap();
+        PriorityQueue<Integer> pq=new PriorityQueue();
+        int half=arr.length/2;
+        int sum=0;
+        for(int ele:arr){
+            map.put(ele, map.getOrDefault(ele, 0)+1);
+        }
+        
+        Iterator<Integer> it=map.values().iterator();
+        while(it.hasNext()){
+            int cnt=it.next();
+            pq.add(cnt);
+            sum+=cnt;
+            Integer last=null;
+            while(sum>=half){
+                last=pq.poll();
+                sum-=last;
+            }
+            if(last==null)continue;
+            sum+=last;
+            pq.add(last);
+        }
+        
+        return pq.size();
+    }
+}
