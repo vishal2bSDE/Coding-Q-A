@@ -1,0 +1,26 @@
+Problem Link : https://leetcode.com/problems/break-a-palindrome/
+------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1), TimeTaken-<14hr
+------------------------------------------------------------------
+Logic :
+To break the pallindrome and also make it smallest lexicographically 
+we need to keep 2 things in mind 1 dont change anything in middle
+coz it wont break the pallindrome and start from 0th idx and if you find 
+any idx != 'a' replace it with 'a' or if you didn't find replace the last value
+with 'b'. Coz the str i purely made of 'a'.
+
+
+class Solution {
+    public String breakPalindrome(String str) {
+        if(str.length()==1)return "";
+        int n=str.length();
+        for(int i=0;i<n;i++){
+            if(n/2==i && n%2!=0)
+                continue;
+            if(str.charAt(i)!='a')
+                return str.substring(0, i)+'a'+str.substring(i+1, n);
+        }
+        
+        return str.substring(0, n-1)+'b';
+    }
+}
