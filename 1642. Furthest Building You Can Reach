@@ -1,0 +1,43 @@
+Problem Link : https://leetcode.com/problems/furthest-building-you-can-reach/
+------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N), TimeTake - >2weeks
+------------------------------------------------------------------------------
+Explanation : 
+If next building is shorter or equal we can just jump. If nxt building is shorter
+we will use ladder and store the diff in priority queue(pq) otherwise we will see if the curr
+diff(buildinght[i+1] - buildinght[i]) is smaller than smallest diff in pq and keep doing that
+till we cant do anything or no bricks left.
+
+
+
+class Solution {
+    public int furthestBuilding(int[] hts, int bricks, int ladders) {
+        PriorityQueue<Integer> pq=new PriorityQueue();
+        int ci = 0;
+        
+        for(int i=0;i<hts.length-1;i++) {
+            if(hts[i]>=hts[i+1]) {
+                ci++;
+                continue;
+            }
+            int diff = hts[i+1]-hts[i];
+            if(ladders>0) {
+                --ladders;
+                pq.add(diff);
+                ++ci;
+            } else if(!pq.isEmpty() && pq.peek()<=bricks && pq.peek()<diff) {
+                bricks-=pq.peek();
+                pq.poll();
+                pq.add(diff);
+                ++ci;
+            } else if(bricks>=diff){
+                bricks-=diff;
+                ++ci;
+            } else {
+                break;
+            }
+        }
+        
+        return ci;
+    }
+}
