@@ -1,0 +1,37 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/sort-an-array-of-0s-1s-and-2s4231/1
+------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1), TimeTaken - 4hrs
+------------------------------------------------------------------------------------------------------------
+Explanation :
+We will use 3 pointers 1 on the left one one the rt and the third will traverse the array. So if third pointer
+encounters a 0 we will swap with left pointer and increase or 2 we will swap with right pointer and decrease the
+rt pointer we keep doing this till third pointer is <= to rt pointer. And if we encounter 1 we dont do anything.
+
+
+class Solution
+{
+    public static void sort012(int a[], int n)
+    {
+        int l=0, r=n-1;
+        int i=0;
+        while(i<=r){
+            // System.out.println(i);
+            if(i<l)
+                i=l;
+            if(a[i]==0){
+                swap(a, l, i);
+                ++l;
+            } else if(a[i]==2){
+                swap(a, i, r);
+                --r;
+            } else {
+                ++i;
+            }
+        }
+    }
+    private static void swap(int[] arr, int i, int j){
+        int t=arr[i];
+        arr[i]=arr[j];
+        arr[j]=t;
+    }
+}
