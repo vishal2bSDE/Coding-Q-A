@@ -1,0 +1,43 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/kth-smallest-element5635/1
+----------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(logN), TimeTaken - 1d
+----------------------------------------------------------------------------------------
+Explanation :
+We will use quick select algo here, its same as quick sort algo.
+We will choose last element of that blk as pivot and if the ele is <pivot
+we move it to left side or to right side. And after this we check the idx of partition
+if it is equal to k then return that value. Otherwise depending on the partition idx go left
+if partition idx is >k or else go right.
+
+
+class Solution{
+    public static int kthSmallest(int[] arr, int l, int r, int k) 
+    { 
+        int partition = partitionTheArr(arr, l, r);
+        swap(arr, partition, r);
+        int ans =0;
+        if(partition == k-1)
+            ans = arr[k-1];
+        else if (partition > k-1)
+            ans = kthSmallest(arr, l, partition-1, k);
+        else
+            ans = kthSmallest(arr, partition+1, r, k);
+        
+        return ans;
+    } 
+    private static int partitionTheArr(int[] arr, int l, int r){
+        int p=l;
+        for(int i1=l;i1<r;i1++){
+            if(arr[i1]<=arr[r]){
+                swap(arr, i1, p++);
+            }
+        }
+        
+        return p;
+    }
+    private static void swap(int[] arr, int i, int j){
+        int t=arr[i];
+        arr[i]=arr[j];
+        arr[j]=t;
+    }
+}
