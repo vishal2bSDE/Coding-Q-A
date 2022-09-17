@@ -1,0 +1,36 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/count-pairs-with-given-sum5022/1
+----------------------------------------------------------------------------------------------------
+Complexity : Memory - O(N), Time - O(N)
+----------------------------------------------------------------------------------------------------
+Explanation :
+Add all the elements in hash map as key and value as their freq. So we will follow this eqn a = k - b
+so if a no is already process as b we wont process it as a and every time a==b then we will just use a formula 
+to find the nos of pair.
+
+
+class Solution {
+    int getPairsCount(int[] arr, int n, int k) {
+        Map<Integer, Integer> map=new HashMap();
+        Set<Integer> set=new HashSet();
+        int cnt=0;
+        for(int i=0;i<n;i++){
+            if(!map.containsKey(arr[i]))map.put(arr[i], 0);
+            map.put(arr[i], map.get(arr[i])+1);
+        }
+        // System.out.println(map);
+        for(int i=0;i<n;i++){
+            int diff=k-arr[i];
+            if(map.containsKey(diff) && !set.contains(arr[i])) {
+                if(diff==arr[i]){
+                    if(map.get(diff)>1)
+                        cnt+=(map.get(diff)/2*(map.get(diff)-1));
+                } else {
+                    cnt+=map.get(diff);
+                }
+                set.add(diff);
+            }
+        }
+        
+        return cnt;
+    }
+}
