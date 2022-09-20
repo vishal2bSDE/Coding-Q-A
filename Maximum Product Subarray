@@ -1,0 +1,60 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/maximum-product-subarray3604/1
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+------------------------------------------------------------------------------------------------
+Logic :
+So every time we encounter a zero in [] we divide the [] in two blocks excluding the 0 idx
+And we keep doing this till we find a non 0 blk. Then we multiply all the ele in that blk
+and see if the prod is > 0 then that is the max prod of that blk otherwise we divide that 
+blk total prod with prod of ele from left till first -ve no and same from other side and
+return the max of that blk.
+
+
+class Solution {
+    // Function to find maximum product subarray
+    long maxProduct(int[] arr, int n) {
+        // System.out.println("here");
+        return maxProdInBlk(0, n-1, arr);
+    }
+    long maxProdInBlk(int s, int e, int[] arr){
+        if(e<s)return 0;
+        if(e==s)return arr[e];
+        int m=findMid(s, e, arr);
+        long res =0;
+        if(arr[m]!=0) {
+            res = prod(s, e, arr);
+        } else {
+            res = Math.max(maxProdInBlk(s, m-1, arr), maxProdInBlk(m+1, e, arr));
+        }
+        return res;
+    }
+    int findMid(int s, int e, int[] arr){
+        int n=e;
+        while(s<=e){
+            if(arr[s]==0 || s==e)
+                return s;
+            ++s;
+        }
+        return n;
+    }
+    long prod(int s, int e, int[] arr){
+        long mul1=1, mul2=1, mul3=1;
+        for(int i=s;i<=e;i++){
+            mul1*=arr[i];
+        }
+        if(mul1>0)
+            return mul1;
+        for(int i=s;i<=e;i++){
+            mul2*=arr[i];
+            if(mul2<0)
+                break;
+        }
+        for(int i=e;i>=s;i--){
+            mul3*=arr[i];
+            if(mul3<0)
+                break;
+        }
+        // System.out.println(mul1+" "+mul2+" "+mul3);
+        return Math.max(mul1/mul2, mul1/mul3);
+    }
+}
