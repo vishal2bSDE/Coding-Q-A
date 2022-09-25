@@ -1,0 +1,36 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/three-way-partitioning/1
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(1)
+------------------------------------------------------------------------------------------------
+Logic :
+We will iterate the [] 2 times once to bring all the eles < than range in front and keep the track of i
+after that do the same thing to bring the range after that then the [] will follow the cond
+
+
+class Solution{
+    //Function to partition the array around the range such 
+    //that array is divided into three parts.
+    public void threeWayPartition(int arr[], int a, int b)
+    {
+        int j=arr.length-1;
+        int i=0;
+        while(i<j){
+            if(arr[i]<a)
+                ++i;
+            else
+                swap(arr, i, j--);
+        }
+        j=arr.length-1;
+        while(i<j){
+            if(arr[i]>b)
+                swap(arr, i, j--);
+            else
+                ++i;
+        }
+    }
+    private void swap(int[] arr, int i, int j){
+        int t=arr[i];
+        arr[i]=arr[j];
+        arr[j]=t;
+    }
+}
