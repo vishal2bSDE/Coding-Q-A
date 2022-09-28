@@ -1,0 +1,29 @@
+Problem Link : https://leetcode.com/problems/search-a-2d-matrix/submissions/
+--------------------------------------------------------------------------------
+Complecity : Time - O(log(r*c), Memory - O(1)
+--------------------------------------------------------------------------------
+Logic :
+So the logic is we will treat this 2d matrix as 1d [] and eleminate the blk
+which not req. How will we do that fro every 1d[] idx to 2d[] idx we convert
+1d[]idx/2dcolNum to get row and 1d[]idx%2dcolNum to get col. And check the ele
+class Solution {
+    public boolean searchMatrix(int[][] arr, int ele) {
+        int r=arr.length, c=arr[0].length;
+        int s=0, e=(r*c)-1;
+        
+        while(s<=e){
+            int m=(s+e)/2;
+            int i=m/c;
+            int j=m%c;
+            // System.out.println()
+            if(arr[i][j]==ele)
+                return true;
+            if(arr[i][j]<ele)
+                s=m+1;
+            else
+                e=m-1;
+        }
+        
+        return false;
+    }
+}
