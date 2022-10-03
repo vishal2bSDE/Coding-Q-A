@@ -1,0 +1,52 @@
+Problem Link : https://www.geeksforgeeks.org/rotate-a-matrix-by-90-degree-in-clockwise-direction-without-using-any-extra-space/
+--------------------------------------------------------------------------------------------------------------------------------
+Complexity: Time-O(N^2), Memory-O(1)
+--------------------------------------------------------------------------------------------------------------------------------
+Logic :
+At each iteration we take each end and swap the values and walk in sq. After each iteration just decrease the perimeter of the sq.
+
+class GFG {
+	public static void main (String[] args) {
+		int[][] arr={ { 1, 2, 3},
+                      { 5, 6, 7 },
+                      { 9, 10, 11 } };
+        int r=arr.length, c=arr[0].length;
+        print(arr, r, c);
+        flip(arr, r, c);
+        print(arr, r, c);
+	}
+	private static void flip(int[][] arr, int r, int c){
+	    int i=0, i1=0;
+	    int j=0, j1=c-1;
+	    int k=r-1, k1=c-1;
+	    int l=r-1, l1=0;
+	    
+	    while(i<r/2){
+	        int i2=i1;
+	        int j2=j;
+	        int k2=k1;
+	        int l2=l;
+	        
+	        while(i2<j1){
+	            int e1=arr[i][i2];
+	            int e2=arr[j2][j1];
+	            int e3=arr[k][k2];
+	            int e4=arr[l2][l1];
+	            arr[j2][j1]=e1; arr[k][k2]=e2;
+	            arr[l2][l1]=e3; arr[i][i2]=e4;
+	            
+	            ++i2; ++j2; --k2; --l2;
+	        }
+	        ++i; ++i1;
+	        ++j; --j1;
+	        --k; --k1;
+	        --l; ++l1;
+	    }
+	}
+	private static void print(int[][] arr, int r, int c){
+	    for(int i=0;i<r;i++){
+            System.out.println(Arrays.toString(arr[i]));
+        }
+        System.out.println("-----------------------------");
+	}
+}
