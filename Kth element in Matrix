@@ -1,0 +1,46 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/kth-element-in-matrix/1
+----------------------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory-O(N)
+----------------------------------------------------------------------------------
+Logic : 
+All ele right and down of an element is bigger so we take the element print it and 
+add the right and down to the stack and convert the ele to -ve in [] so that it wont get 
+added twice. And use a custom comparator to sort the pq.
+
+class Solution
+{
+  public static int kthSmallest(int[][]arr,int n,int k)
+	{
+        PriorityQueue<Pair> pq=new PriorityQueue<>((p1, p2) -> {
+            return Math.abs(arr[p1.i][p1.j])-Math.abs(arr[p2.i][p2.j]);} );
+        pq.add(new Pair(0, 0));
+        int cnt=0;
+        
+        while(!pq.isEmpty()){
+            ++cnt;
+            Pair cur=pq.poll();
+            int i=cur.i, j=cur.j;
+            if(cnt==k)
+                return Math.abs(arr[i][j]);
+            if(i+1<n && arr[i+1][j]>0){
+                arr[i+1][j]*=-1;
+                pq.add(new Pair(i+1, j));
+                
+            }
+            if(j+1<n && arr[i][j+1]>0){
+                arr[i][j+1]*=-1;
+                pq.add(new Pair(i, j+1));
+                
+            }
+        }
+        
+        return 0;
+    }
+}
+class Pair{
+    int i, j;
+    Pair(int k, int l){
+        i=k;
+        j=l;
+    }
+}
