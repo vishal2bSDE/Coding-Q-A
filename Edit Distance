@@ -1,0 +1,43 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/edit-distance3702/1
+------------------------------------------------------------------------------------
+Complexity : Time-O(N*M), Memory-O(N*M)
+------------------------------------------------------------------------------------
+Logic :
+Logic is simple we will use dp here. And the dp param will the cur idx of s, t strings.
+If the chars are same we dont need any opr if not we need to do one opr. And we let the 
+other recusrssion do the same work again, and they will do the rest of the work while
+storing the cur value in dp[][]. 
+
+
+class Solution {
+    int[][] dp;
+    public int editDistance(String s, String t) {
+        int ns=s.length(), nt=t.length();
+        dp=new int[ns][nt];
+        for(int i=0;i<ns;i++)
+            Arrays.fill(dp[i], -1);
+        
+        return traverse(0, 0, s, t, ns, nt);
+    }
+    private int traverse(int i, int j, String s, String t, int ns, int nt){
+        if(i>=ns || j>=nt){
+            return Math.max(nt-j, ns-i);
+        }
+        if(dp[i][j]!=-1){
+            return dp[i][j];
+        }
+        
+        int min=Integer.MAX_VALUE;
+        char cs=s.charAt(i), ct=t.charAt(j);
+        if(cs==ct){
+            min=traverse(i+1, j+1, s, t, ns, nt);
+        } else{
+            min=1+Math.min(traverse(i+1, j+1, s, t, ns, nt), Math.min(
+                traverse(i, j+1, s, t, ns, nt), traverse(i+1, j, s, t, ns, nt)));
+        }
+        
+        dp[i][j]=min;
+        return min;
+        
+    }
+}
