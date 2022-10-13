@@ -1,0 +1,60 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/word-break1352/1
+----------------------------------------------------------------------------
+Complexity : Time-O(N^2), Memory--O(N)
+----------------------------------------------------------------------------
+Logic:
+So first we will use Trie data structure to struct tree out of dict words.
+Then for every next recurssion we will see if there is a word in dict wt the help
+of trie and if yes send it for next recurssion. And store the value in ith idx 
+the value u get from nex recurssion. Break the loop if the end of string, word not found
+in trie or you got the value 1 from the next recurssion. Base cond is when the string is empty.
+
+class Sol
+{
+    static Trie head;
+    public static int wordBreak(String A, ArrayList<String> B )
+    {
+        head=new Trie();
+        for(String str:B){
+            buildTrie(str);
+        }
+        int n=A.length();
+        int[] dp=new int[n];
+        Arrays.fill(dp, -1);
+        return traverse(0, A.toCharArray(), dp, n);
+    }
+    private static void buildTrie(String str){
+        Trie tmp=head;
+        for(char ch:str.toCharArray()){
+            if(!tmp.map.containsKey(ch))
+                tmp.map.put(ch, new Trie());
+            tmp=tmp.map.get(ch);
+        }
+        tmp.e=true;
+    }
+    private static int traverse(int i, char[] ch, int[] dp, int n){
+        if(i>=n)return 1;
+        if(dp[i]!=-1)return dp[i];
+        int res=0;
+        Trie tmp=head;
+        for(int i1=i;i1<n;i1++){
+            char c=ch[i1];
+            if(!tmp.map.containsKey(c))break;
+            tmp=tmp.map.get(c);
+            if(!tmp.e)continue;
+            res=traverse(i1+1, ch, dp, n);
+            if(res==1)
+                break;
+        }
+        dp[i]=res;
+        return dp[i];
+    }
+}
+class Trie{
+    boolean e;
+    HashMap<Character, Trie> map;
+    Trie(){
+        e=false;
+        map=new HashMap();
+    }
+}
