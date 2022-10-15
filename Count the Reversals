@@ -1,0 +1,45 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/count-the-reversals0401/1
+-------------------------------------------------------------------------------------
+Complexity : Time-O(N), Memory-O(1)
+-------------------------------------------------------------------------------------
+Logic :
+The logic is that whenever there comes an open bracket increase its counter or else decrease it.
+If we encounter close bracket and open bracket count is 0 the increase the close bracket count.
+At the end first add the pair of each of the counter than add the rest of the lone brackets. If 
+they dont have pair then its not possible to balance.
+
+
+class Sol
+{
+    int countRev (String s)
+    {
+        int nob=0, ncb=0, cob=0, ccb=0, res=0;
+        for(char ch:s.toCharArray()){
+            if(ch=='{' || ch=='}'){
+                if(ch=='{')
+                    ++cob;
+                else{
+                    if(cob>0)--cob;
+                    else ++ccb;
+                }
+            } else {
+                if(ch=='(')
+                    ++nob;
+                else{
+                    if(nob>0)--nob;
+                    else ++ncb;
+                }
+            }
+        }
+        res+=(nob/2)+(ncb/2)+(cob/2)+(ccb/2);
+        nob%=2;
+        ncb%=2;
+        cob%=2;
+        ccb%=2;
+        
+        if((nob+ncb)%2!=0 || (cob+ccb)%2!=0)
+            return -1;
+        res+=(nob+ncb+cob+ccb);
+        return res;
+    }
+}
