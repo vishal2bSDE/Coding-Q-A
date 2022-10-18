@@ -1,0 +1,137 @@
+Problem Link : https://workat.tech/machine-coding/practice/design-parking-lot-qm6hwq4wkhp8
+-------------------------------------------------------------------------------------------
+
+
+import java.io.IOException;
+import java.util.*;
+
+public class ParkingLotApp {
+    public static void main(String[] args) throws IOException {
+        Scanner in=new Scanner(System.in);
+        String[] cmnd=takeInput(in);
+        Map<String, String> dir=new HashMap<>();
+        int fc=Integer.parseInt(cmnd[1]), fs=Integer.parseInt(cmnd[2]);
+        Floor[] floors=new Floor[fc];
+        initializeFloors(floors,fs);
+        while(true){
+            cmnd=takeInput(in);
+            if(cmnd[0].equals("Exit"))
+                break;
+            else if(cmnd[0].equals("display")){
+                if(cmnd[1].equals("free_count")){
+                    displayFreeCount(floors, cmnd[2]);
+                } else if(cmnd[1].equals("free_slots")){
+                    displayFreeSlots(floors, cmnd[2]);
+                } else {
+                    displayOccupiedCount(floors, cmnd[2], fs);
+                }
+            } else if(cmnd[0].equals("park_vehicle")){
+                String parkingResult = parkVehicle(floors, cmnd[1]);
+                if(parkingResult.equals("Parking Lot Full"))
+                    System.out.println(parkingResult);
+                else {
+                    dir.put(parkingResult, cmnd[1]+" "+cmnd[2]+" "+cmnd[3]);
+                }
+            } else {
+                unparkVehicle(dir, floors, cmnd[1]);
+            }
+
+        }
+    }
+    private static String[] takeInput(Scanner in){
+        return in.next().split(" ");
+    }
+    private static void initializeFloors(Floor[] floors, int slots){
+        for(int i=0;i<floors.length;i++){
+            floors[i]=new Floor(slots, i+1);
+        }
+    }
+    private static void displayFreeCount(Floor[] floors, String type){
+        for (Floor floor : floors) {
+            System.out.println("displayFreeCount : " + floor.getType(type).size());
+        }
+    }
+    private static void displayFreeSlots(Floor[] floors, String type){
+        for (Floor floor : floors) {
+            System.out.println("displayFreeSlots : " + floor.getType(type));
+        }
+    }
+    private static void displayOccupiedCount(Floor[] floors, String type, int fs){
+        for (Floor floor : floors) {
+            System.out.println("displayOccupiedCount : " + (fs - floor.getType(type).size()));
+        }
+    }
+    private static String parkVehicle(Floor[] floors, String type){
+        String parkingResult="Parking Lot Full";
+        for(Floor floor:floors){
+            if(floor.hasParking(type))
+                parkingResult=floor.parkVehicle(type);
+        }
+        return parkingResult;
+    }
+    private static void unparkVehicle(Map<String, String> map, Floor[] floors, String ticketNo){
+        String[] ticketDesc=ticketNo.split("_");
+        String[] carDesc=map.remove(ticketNo).split("_");
+        int fn=Integer.parseInt(ticketDesc[1]);
+        int slot=Integer.parseInt(ticketDesc[2]);
+        floors[fn].freeTheSlot(carDesc[0], slot);
+        System.out.println(Arrays.toString(carDesc));
+    }
+
+
+}
+class Floor{
+    TreeSet<Integer> st, sb, sc;
+    int num;
+    Floor(int slots, int num){
+        st=new TreeSet();
+        sb=new TreeSet();
+        sc=new TreeSet();
+        this.num=num;
+        initialize(slots);
+    }
+    public void initialize(int slots){
+        for(int i=1;i<=slots;i++){
+            if(i==1){
+                initializeSlots(st, i);
+            } else if(i>1 && i<4){
+                initializeSlots(sb, i);
+            } else {
+                initializeSlots(sb, i);
+            }
+        }
+    }
+    private void initializeSlots(Set<Integer> parking, int slot){
+        parking.add(slot);
+    }
+    public String parkVehicle(String type){
+        return assignSlot(getType(type));
+    }
+    private String assignSlot(TreeSet<Integer> parking){
+        return "PR1234_"+parking.first()+"_"+num;
+    }
+    public boolean hasParking(String type){
+        return !getType(type).isEmpty();
+    }
+    public void freeTheSlot(String type, int num){
+        getType(type).add(num);
+    }
+    public TreeSet<Integer> getType(String type){
+        if(type.equals("TRUCK")){
+            return st;
+        } else if(type.equals("BIKE")){
+             return sb;
+        }
+        return sc;
+    }
+}
+class Vehicle{
+    String type;
+    String color;
+    String regNo;
+
+    @Override
+    public String toString(){
+        return type+"_"+color+"_"+regNo;
+    }
+}
