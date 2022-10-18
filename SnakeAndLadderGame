@@ -1,0 +1,79 @@
+Problem Link : https://workat.tech/machine-coding/practice/snake-and-ladder-problem-zgtac9lxwntg
+-----------------------------------------------------------------
+
+public class MainClass {
+    public static void main(String[] args) throws IOException {
+        Scanner in=new Scanner(System.in);
+        Map<Integer, Integer> snakes=new HashMap();
+        Map<Integer, Integer> ladders=new HashMap();
+        List<Player> players=new ArrayList();
+        
+        int s=in.nextInt();
+        for(int i=0;i<s;i++){
+            int h=in.nextInt(), t=in.nextInt();
+            snakes.put(h, t);
+        }
+        int l=in.nextInt();
+        for(int i=0;i<l;i++){
+            int h=in.nextInt(), t=in.nextInt();
+            ladders.put(t, h);
+        }
+        int n=in.nextInt();
+        for(int i=0;i<n;i++){
+            players.add(new Player(0, in.next()));
+        }
+        
+        boolean finished=false;
+        String winnerName="No_one";
+        
+        while(!finished){
+            for(int i=0;i<n;i++){
+                Player cp=players.get(i);
+                int diceFace=rollDice();
+                
+                int nxtIdx=cp.idx+diceFace;
+                if(nxtIdx>100)
+                    continue;
+                if(nxtIdx==100){
+                    finished=true;
+                    winnerName=cp.name;
+                    System.out.println("Player "+cp.name+" turn. And moved from "+cp.idx+" to "+100);
+                    break;
+                }
+                if(snakes.containsKey(nxtIdx))
+                    nxtIdx=snakBitGoDown(nxtIdx, snakes);
+                if(ladders.containsKey(nxtIdx))
+                    nxtIdx=ladderClimbUp(nxtIdx, ladders);
+                if(snakes.containsKey(nxtIdx))
+                    nxtIdx=snakBitGoDown(nxtIdx, snakes);
+                
+                System.out.println("Player "+cp.name+" turn. And moved from "+cp.idx+" to "+nxtIdx);
+                cp.idx=nxtIdx;
+            }
+        }
+        System.out.println("Player "+winnerName+" wins :/)");
+    }
+    private static int rollDice(){
+        
+        return (int)(Math.random()*7);
+    }
+    private static int snakBitGoDown(int idx, Map<Integer, Integer> snakes){
+        if(snakes.containsKey(idx))
+            return snakBitGoDown(snakes.get(idx), snakes);
+        return idx;
+    }
+    private static int ladderClimbUp(int idx, Map<Integer, Integer> ladders){
+        if(ladders.containsKey(idx))
+            return ladderClimbUp(ladders.get(idx), ladders);
+        return idx;
+    }
+}
+class Player{
+    int idx;
+    String name;
+    Player(int idx, String name){
+        this.idx=idx;
+        this.name=name;
+    }
+}
+
