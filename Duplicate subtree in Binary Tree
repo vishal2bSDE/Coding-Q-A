@@ -1,0 +1,35 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/duplicate-subtree-in-binary-tree/1
+------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+------------------------------------------------------------------------------------------------
+
+
+
+class Solution {
+    int dup=0;
+    Set<String> set;
+    int dupSub(Node root) {
+        set=new HashSet();
+        traverse(root);
+        return dup;
+    }
+    void traverse(Node root){
+        if(root==null || dup==1)return;
+        if(check(root.left) && check(root.right)){
+            String str=val(root.left)+"+"+root.data+"+"+val(root.right);
+            if(set.contains(str))
+                dup=1;
+            set.add(str);
+        } else {
+            traverse(root.left);
+            traverse(root.right);
+        }
+    }
+    boolean check(Node node){
+        return node==null || (node.left==null && node.right==null);
+    }
+    String val(Node node){
+        if(node==null)return "";
+        return node.data+"";
+    }
+}
