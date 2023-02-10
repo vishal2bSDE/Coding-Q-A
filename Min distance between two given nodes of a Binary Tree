@@ -1,0 +1,36 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/min-distance-between-two-given-nodes-of-a-binary-tree/1
+------------------------------------------------------------------------------------------------------------------------
+Complexity : Time - O(N), Memory - O(N)
+------------------------------------------------------------------------------------------------------------------------
+
+class GfG {
+    Set<Integer> set=new HashSet();
+    int ans=0;
+    int findDist(Node root, int a, int b) {
+        // Your code here
+        set.add(a);set.add(b);
+         traverse(root);
+         if(ans!=0)--ans;
+         return ans;
+    }
+    int traverse(Node root){
+        if(root==null)return 0;
+        int cnt=0;
+        int left=traverse(root.left);
+        int right=traverse(root.right);
+        if(set.contains(root.data))
+            cnt=1;
+        if(left!=0 && right!=0){
+            ans=1+left+right;
+            return 0;
+        }
+        if(left!=0 || right!=0){
+            if(cnt==1){
+                ans=cnt+left+right;
+                return 0;
+            }
+            return 1+left+right;
+        }
+        return cnt;
+    }
+}
