@@ -1,0 +1,62 @@
+Problem Link : https://practice.geeksforgeeks.org/problems/n-meetings-in-one-room-1587115620/1
+------------------------------------------------------------------------------------------------
+Complexity : Time-O(NlogN), Memory-O(N)
+------------------------------------------------------------------------------------------------
+Logic :
+
+We ll first sort the time. Then we ll start from the last And see if current meeting(1)+(max till endTime+1) will give us the max num
+if we include the curr meet or else if we dont take this one just take the ith+1.
+maxNum=Max(dp[i+1], 1+dp[endTime+1]). This will keep max from i to n
+
+class Solution 
+{
+    //Function to find the maximum number of meetings that can
+    //be performed in a meeting room.
+    static TreeSet<Integer> set;
+    static Map<Integer, Integer> map;
+    public static int maxMeetings(int start[], int end[], int n)
+    {
+        
+        set=new TreeSet();
+       map=new HashMap();
+       List<Pair> list=toPair(start, end);
+       
+       int max=1;
+       Collections.sort(list, (a, b)->{
+           if(a.s==b.s)return a.e-b.e;
+           return a.s-b.s;
+       });
+       map.put(list.get(n-1).s, 1);
+       set.add(list.get(n-1).s);
+       for(int i=n-2;i>=0;i--){
+           
+           int s=list.get(i).s;
+           int e=list.get(i).e;
+           int ele=Math.max(max,1+getNext(e));
+           max=Math.max(ele, max);
+           if(!map.containsKey(s))map.put(s, 1);
+           map.put(s, Math.max(map.get(s), max));
+           set.add(s);
+       }
+       return max;
+    }
+    private static List<Pair> toPair(int[] s, int[] e){
+        List<Pair> list=new ArrayList();
+        for(int i=0;i<s.length;i++){
+            list.add(new Pair(s[i], e[i]));
+        }
+        return list;
+    }
+    private static int getNext(int ele){
+        Integer nxt=set.higher(ele);
+        if(nxt==null)return 0;
+        return map.get(nxt);
+    }
+}
+class Pair{
+    int s, e;
+    Pair(int s1, int e1){
+        s=s1;
+        e=e1;
+    }
+}
